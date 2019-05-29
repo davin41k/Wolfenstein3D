@@ -125,5 +125,8 @@ int		check_norme(t_wolf *wolf);
 
 	//	***MAP_READER***
 int     **init_map_array(void);
+int		*get_array_line(char *line);
+void	print_map(t_wolf *wolf);
+int		**read_map(t_wolf *wolf);
 
 #endif
