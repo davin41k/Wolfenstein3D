@@ -47,5 +47,7 @@ void	error_exit(int errno)
 		ft_putendl("thread error");
 	else if (errno == MEM_ERR)
 		ft_putendl("memory error");
+	else if (errno == MAP_ERR)
+		ft_putendl("error: map is not correct");
 	exit(0);
 }

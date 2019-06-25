@@ -162,7 +162,7 @@ int   main(void)
     oldTime = 40;//time;
     time = 40;//getTicks();
     double frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
-    print(1.0 / frameTime); //FPS counter
+//    print(1.0 / frameTime); //FPS counter
     redraw();
     cls();
 //speed modifiers

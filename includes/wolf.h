@@ -35,6 +35,7 @@
 # define USAGE			0
 # define THREAD_ERR		1
 # define MEM_ERR		2
+# define MAP_ERR		3
 
 # define PALETTE_ONE	0
 # define PALETTE_TWO	1
@@ -69,6 +70,7 @@
 # include "../get_next_line/get_next_line.h"
 # include <unistd.h>
 # include <pthread.h>
+# include <SDL2/SDL.h>
 
 typedef	struct		s_graphics
 {
@@ -118,15 +120,21 @@ void	error_exit(int errno);
 void	clean_text(char **splitted);
 
 	//	***NORMINATTE***
-int		get_count_x(char *line);
+int		count_x(char *line);
+int		get_count_x(int x);
 int		get_count_y(int y);
 int		norme_norminatte(int first_line, char *line, int fd);
 int		check_norme(t_wolf *wolf);
+int		check_line_correct(char *line);
+int		is_number(char *str);
 
 	//	***MAP_READER***
 int     **init_map_array(void);
 int		*get_array_line(char *line);
 void	print_map(t_wolf *wolf);
 int		**read_map(t_wolf *wolf);
+
+	//	***INIT_FUNCTION***
+int		wolf_init(t_wolf *wolf, char *file_name);
 
 #endif

@@ -15,10 +15,14 @@
 int		main(int ac, char **av)
 {
 	t_wolf		wolf;
+	t_map		map;
 
-	wolf.file_name = av[1];
-	int		norme = check_norme(&wolf);
-	printf("norme:\t%d\n", norme);
+	wolf_init(&wolf, av[1]);
+	//wolf.file_name = av[1];
+	if (!check_norme(&wolf))
+		error_exit(MAP_ERR);
+	// wolf.map->map = read_map(&wolf);
+	// print_map(&wolf);
 	return (0);
 }
 
