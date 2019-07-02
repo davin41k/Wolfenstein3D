@@ -60,7 +60,6 @@ int   main(void)
   t_color color;
 	double time = 0; //time of current frame
 	double oldTime = 0; //time of previous frame
-
 	while(1/*!done()*/)
   {
     for(int x = 0; x < W; x++)

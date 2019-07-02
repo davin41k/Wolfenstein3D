@@ -74,24 +74,47 @@
 
 typedef	struct		s_graphics
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	void			*img;
-	char			*data;
+	SDL_Window		*win;
+	SDL_Renderer	*render;
+	SDL_Event		event;
 }					t_graph;
 
 typedef	struct		s_player
 {
-	double			p_x;
-	double			p_y;
+	double			pos_x;
+	double			pos_y;
 	double			dir_x;
 	double			dir_y;
-
+	double			plane_x;
+	double			plane_y;
+	double			cam_x;
+	double			raydir_x;
+	double			reydir_y;
+	double			side_dst_x;
+	double			side_dst_y;
+	double			dist_dx;
+	double			dist_dy;
+	double			pwall_dst;
+	double			move_sp;
+	double			rot_speed;
+	double			move_acceler;
+	double			rot_acceler;
+	int				step_x;
+	int				step_y;
+	int				hit;
+	int				hit_side;
+	int				line_height;
+	int				start_draw;
+	int				end_draw;
 }					t_player;
 
 typedef	struct		s_map
 {
 	int				**map;
+	int				map_w;
+	int				map_h;
+	int				map_x;
+	int				map_y;
 }					t_map;
 
 typedef	struct		s_color
@@ -99,15 +122,18 @@ typedef	struct		s_color
 	int				red;
 	int				green;
 	int				blue;
-
+	int				color;		// :)
 }					t_color;
 
 typedef	struct		s_wolf
 {
+	int				scr_h;
+	int				scr_w;
 	char			*file_name;
 	t_graph			*graph;
 	t_player		*player;
 	t_map			*map;
+	t_color			*color;
 }					t_wolf;
 
 	//	***EXITS***
@@ -136,5 +162,21 @@ int		**read_map(t_wolf *wolf);
 
 	//	***INIT_FUNCTION***
 int		wolf_init(t_wolf *wolf, char *file_name);
+void	player_init(t_wolf *wolf);
+void	sdl_init(t_wolf *wolf);
+
+	//	***DRAWING***
+void	do_step(t_wolf *wolf);
+void	do_dda(t_wolf *wolf);
+void	calc_cam_distance(t_wolf *wolf);
+void	calc_line_height(t_wolf *wolf);
+void	get_wall_color(t_wolf *wolf);
+void	wall_drawing(t_wolf *wolf);
+double	get_fps(t_wolf *wolf);
+int		interactive_elem(t_wolf *wolf);
+void	do_move(t_wolf *wolf);
+void	rotate_right(t_wolf *wolf);
+void	rotate_left(t_wolf *wolf);
+void	set_move_speed(t_wolf *wolf, double fps);
 
 #endif

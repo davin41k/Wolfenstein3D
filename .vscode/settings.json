@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "wolf.h": "c"
+        "wolf.h": "c",
+        "pthread.h": "c"
     }
 }
