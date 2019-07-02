@@ -51,9 +51,9 @@ void	do_work(t_wolf *wolf)
 	{
 		while (++x < wolf->scr_h)
 		{
-			player_init(wolf);
+			player_init(wolf, x);
 			wall_calculation(wolf, x);
-			set_move_speed(wolf);
+			set_move_speed(wolf, x);
 			wall_drawing(wolf);
 			interactive_elem(wolf);
 		}

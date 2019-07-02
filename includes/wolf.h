@@ -89,7 +89,7 @@ typedef	struct		s_player
 	double			plane_y;
 	double			cam_x;
 	double			raydir_x;
-	double			reydir_y;
+	double			raydir_y;
 	double			side_dst_x;
 	double			side_dst_y;
 	double			dist_dx;
@@ -162,7 +162,7 @@ int		**read_map(t_wolf *wolf);
 
 	//	***INIT_FUNCTION***
 int		wolf_init(t_wolf *wolf, char *file_name);
-void	player_init(t_wolf *wolf);
+void	player_init(t_wolf *wolf, int x);
 void	sdl_init(t_wolf *wolf);
 
 	//	***DRAWING***

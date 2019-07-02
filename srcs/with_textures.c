@@ -80,6 +80,7 @@ int main(void)
 	SDL_Event		event;
 	SDL_Rect		box;
 	
+    
 
  	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0)
 	{
