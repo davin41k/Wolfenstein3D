@@ -26,7 +26,7 @@ void	do_step(t_wolf *wolf)
 	}
 	if (wolf->player->raydir_y < 0)
 	{
-		wolf->player->step_y = 1;
+		wolf->player->step_y = -1;
 		wolf->player->side_dst_y = (wolf->player->pos_y - wolf->map->map_y) * wolf->player->dist_dy;
 	}
 	else
@@ -98,12 +98,12 @@ void	get_wall_color(t_wolf *wolf)
 		wolf->color->color = 255;//0x0000FF;
 	else if (color == 4)
 		wolf->color->color = 0;//0xFFFFFF;
-	// else if (color == 5)
-	// 	wolf->color->color = 0xFFFF00;
+	 else if (color == 5)
+	 	wolf->color->color = 0xFFFF00;
 	else
 		wolf->color->color = 16776960;
 	if (wolf->player->hit_side == 1)
-		wolf->color->color /= 2;
+		wolf->color->color /= 1.5;
 	SDL_SetRenderDrawColor(wolf->graph->render, wolf->color->color >> 16 , wolf->color->color >> 8, wolf->color->color, 255);
 	// printf("COLOR IS:\t%d\n", wolf->color->color);
 }

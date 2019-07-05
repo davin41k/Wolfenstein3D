@@ -58,7 +58,7 @@ void	do_work(t_wolf *wolf)
 			wall_calculation(wolf, x);
 		}
 		set_move_speed(wolf, x);
-		//wall_drawing(wolf);
+		//wall_drawing(wolf); //
 		if (interactive_elem(wolf) == -1)			//add norm
 		{ is_running = 0;//
 			break ;//

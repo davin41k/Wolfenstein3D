@@ -221,7 +221,7 @@ int main(void)
 			// SDL_RenderFillRect(ren, &box);
 			// width_wall += 2;
 			//  verLine(x, drawStart, drawEnd, color);
-  	}	//			end For
+  	}	// 	--->		end For
     //timing for input and FPS counter
 		oldTime = time; //void		set_move_speed(t_wolf *wolf, double fps)
 		time = SDL_GetTicks();
