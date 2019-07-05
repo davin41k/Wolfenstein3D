@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "wolf.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "chrono": "c",
+        "__locale": "c"
     }
 }

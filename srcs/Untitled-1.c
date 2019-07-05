@@ -74,7 +74,7 @@ int main(void)
 	SDL_Event		event;
 	SDL_Rect		box;
 	
-
+	//sdl_init(&wolf);
  	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0)
 	{
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
@@ -92,6 +92,7 @@ int main(void)
 		SDL_Log("SDL_CreateRenderer Error: %s\n", SDL_GetError());
 		return (1);
 	}
+	// do work
 	while(1)
 	{
 		for(int x = 0; x < WIDTH; x++)
@@ -120,7 +121,7 @@ int main(void)
 			int hit = 0; //was there a wall hit?
 			int side; //was a NS or a EW wall hit?
 			//calculate step and initial sideDist
-			if (rayDirX < 0)
+			if (rayDirX < 0) // этот иф -> void	do_step(t_wolf *wolf)
 			{
 				stepX = -1;
 				sideDistX = (posX - mapX) * deltaDistX;
@@ -140,7 +141,7 @@ int main(void)
 				stepY = 1;
 				sideDistY = (mapY + 1.0 - posY) * deltaDistY;
 			}
-			//perform DDA
+			//perform DDA do_dda(*wolf)
 			while (hit == 0)
 			{
 				//jump to next map square, OR in x-direction, OR in y-direction
@@ -161,13 +162,13 @@ int main(void)
 					hit = 1;
 			}
 			//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-			if (side == 0)
+			if (side == 0) // void	calc_cam_distance(t_wolf *wolf)
 				perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
 			else
 				perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
 
 			//Calculate height of line to draw on screen
-			int lineHeight = (int)(HEIGHT / perpWallDist);
+			int lineHeight = (int)(HEIGHT / perpWallDist); // void	calc_line_height(t_wolf *wolf)
 
 		//calculate lowest and highest pixel to fill in current stripe
 			int drawStart; 
@@ -179,7 +180,7 @@ int main(void)
 			if(drawEnd >= HEIGHT)
 				drawEnd = HEIGHT - 1;
 
-		//choose wall color
+		//choose wall color // void	get_wall_color(t_wolf *wolf)
 			int color = 0;
 			if (worldMap[mapX][mapY] == 1)
 				color = 16711680;
@@ -192,7 +193,7 @@ int main(void)
 			else
 				color = 16776960;
 			if (side == 1) {color = color / 2;}
-			SDL_SetRenderDrawColor(ren, color >> 16 , color >> 8, color, 255);
+			//-->SDL_SetRenderDrawColor(ren, color >> 16 , color >> 8, color, 255);
 
 			// switch (worldMap[mapX][mapY])
 			// {
@@ -220,9 +221,9 @@ int main(void)
 			// SDL_RenderFillRect(ren, &box);
 			// width_wall += 2;
 			//  verLine(x, drawStart, drawEnd, color);
-   		 }
+  	}	//			end For
     //timing for input and FPS counter
-		oldTime = time;
+		oldTime = time; //void		set_move_speed(t_wolf *wolf, double fps)
 		time = SDL_GetTicks();
 		double frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
 		//printf(" %f \n", (1.0 / frameTime)); //FPS counter

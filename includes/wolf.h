@@ -164,6 +164,7 @@ int		**read_map(t_wolf *wolf);
 int		wolf_init(t_wolf *wolf, char *file_name);
 void	player_init(t_wolf *wolf, int x);
 void	sdl_init(t_wolf *wolf);
+void	sycle_init(t_wolf *wolf, int x);
 
 	//	***DRAWING***
 void	do_step(t_wolf *wolf);
@@ -178,5 +179,8 @@ void	do_move(t_wolf *wolf);
 void	rotate_right(t_wolf *wolf);
 void	rotate_left(t_wolf *wolf);
 void	set_move_speed(t_wolf *wolf, double fps);
+
+// ***MAIN***
+void	do_work(t_wolf *wolf);
 
 #endif

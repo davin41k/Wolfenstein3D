@@ -22,21 +22,21 @@ int		main(int ac, char **av)
 	//wolf.file_name = av[1];
 	if (!check_norme(&wolf))
 		error_exit(MAP_ERR);
-	 wolf.map->map = read_map(&wolf);
-	// print_map(&wolf);
-
+	wolf.map->map = read_map(&wolf);
+	print_map(&wolf);
+	do_work(&wolf);
 
 	return (0);
 }
 
-void	wall_calculation(t_wolf *wolf, int x)
+static	void	wall_calculation(t_wolf *wolf, int x)
 {
 	do_dda(wolf);
 	calc_cam_distance(wolf);
 	calc_line_height(wolf);
 	get_wall_color(wolf);
 	SDL_RenderDrawLine(wolf->graph->render, x, wolf->player->start_draw, x, wolf->player->end_draw);
-
+	//printf("DRAW LINE\n");
 	
 }
 
@@ -45,20 +45,26 @@ void	do_work(t_wolf *wolf)
 	int		is_running;
 	int		x;
 
-	x = -1;
+	
 	is_running = 1;
+	player_init(wolf, x);
 	while (is_running)
 	{
-		while (++x < wolf->scr_h)
+		x = -1;
+		while (++x < wolf->scr_w)
 		{
-			player_init(wolf, x);
+			sycle_init(wolf, x);
+			do_step(wolf);
 			wall_calculation(wolf, x);
-			set_move_speed(wolf, x);
-			wall_drawing(wolf);
-			interactive_elem(wolf);
+		}
+		set_move_speed(wolf, x);
+		//wall_drawing(wolf);
+		if (interactive_elem(wolf) == -1)			//add norm
+		{ is_running = 0;//
+			break ;//
 		}
 	}
-	//do_step(wolf);
+	// do_step(wolf);
 
 }
 

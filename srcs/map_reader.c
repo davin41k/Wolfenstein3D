@@ -21,7 +21,6 @@ int		**read_map(t_wolf *wolf)
 
 	idx = -1;
 	fd = open (wolf->file_name, O_RDONLY);
-	printf("FDGDGDG\n");
 	map = init_map_array();
 	while (get_next_line(fd, &line))
 	{
@@ -36,21 +35,18 @@ int		*get_array_line(char *line)
 	int		*array;
 	char	**splitted;
 	int		idx;
-	printf("ARR_LINE\n");
 
 	if(!(array = (int*)ft_memalloc(sizeof(int) * get_count_x(GET_NUM))))
 		error_exit(MEM_ERR);
 	splitted = ft_strsplit(line, ' ');
 	idx = -1;
-	printf("C_X:\t%d\n", get_count_x(GET_NUM));
+	//printf("C_X:\t%d\n", get_count_x(GET_NUM));
 	while (splitted[++idx])
 	{
-		printf("SPLITED:\t%s\n", splitted[idx]);
 		array[idx] = ft_getnbr(splitted[idx]);
 		//splitted++;
 	}
 	clean_text(splitted);
-	printf("ARR_LINE\n");
 	return (array);
 }
 
@@ -74,7 +70,6 @@ int     **init_map_array(void)
 	// 	if(!(map[idx] = (int*)ft_memalloc(sizeof(int) * line_len)))
 	// 		error_exit(MEM_ERR);
 	// }
-	printf("FDGDGDG\n");
 	return (map);
 }
 

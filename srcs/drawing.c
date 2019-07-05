@@ -59,7 +59,7 @@ void	do_dda(t_wolf *wolf)
 //4
 void	calc_cam_distance(t_wolf *wolf)
 {
-	if (!wolf->player->hit_side)
+	if (wolf->player->hit_side == 0) // !
 		wolf->player->pwall_dst = (wolf->map->map_x - wolf->player->pos_x
 		+ (1 - wolf->player->step_x) / 2) / wolf->player->raydir_x;
 	else
@@ -91,21 +91,24 @@ void	get_wall_color(t_wolf *wolf)
 
 	color = wolf->map->map[wolf->map->map_x][wolf->map->map_y];
 	if (color == 1)
-		wolf->color->color = 0xFF0000;
+		wolf->color->color = 16711680;//0xFF0000;
 	else if (color == 2)
-		wolf->color->color = 0x008000;
+		wolf->color->color = 65280;//0x008000;
 	else if (color == 3)
-		wolf->color->color = 0x0000FF;
+		wolf->color->color = 255;//0x0000FF;
 	else if (color == 4)
-		wolf->color->color = 0xFFFFFF;
-	else if (color == 5)
-		wolf->color->color = 0xFFFF00;
+		wolf->color->color = 0;//0xFFFFFF;
+	// else if (color == 5)
+	// 	wolf->color->color = 0xFFFF00;
+	else
+		wolf->color->color = 16776960;
 	if (wolf->player->hit_side == 1)
-		color = color / 2;
-	SDL_SetRenderDrawColor(wolf->graph->render, color >> 16 , color >> 8, color, 255);
+		wolf->color->color /= 2;
+	SDL_SetRenderDrawColor(wolf->graph->render, wolf->color->color >> 16 , wolf->color->color >> 8, wolf->color->color, 255);
+	// printf("COLOR IS:\t%d\n", wolf->color->color);
 }
 // 7
-void	wall_drawing(t_wolf *wolf)
+void	wall_drawing(t_wolf *wolf) //exception
 {
 	//SDL_RenderDrawLine(wolf->graph->render, x, wolf->player->start_draw, x, wolf->player->end_draw);
 	SDL_RenderPresent(wolf->graph->render);
@@ -128,11 +131,11 @@ double	get_fps(t_wolf *wolf)
 
 void		set_move_speed(t_wolf *wolf, double fps)
 {
-	double	f_time;
-
-	f_time = get_fps(wolf);
-	wolf->player->move_sp = f_time * wolf->player->move_acceler;
-	wolf->player->rot_speed = f_time * wolf->player->rot_acceler;
+	double	frame_time;
+	frame_time = get_fps(wolf);
+	wall_drawing(wolf);
+	wolf->player->move_sp = frame_time * wolf->player->move_acceler;
+	wolf->player->rot_speed = frame_time * wolf->player->rot_acceler;
 }
 
 //	9			re -1 == break
@@ -141,7 +144,8 @@ int			interactive_elem(t_wolf *wolf)
 	t_graph		*g;
 
 	g = wolf->graph;
-	if (SDL_PollEvent(&g->event) && g->event.type == SDL_QUIT)
+	SDL_PollEvent(&g->event);
+	if((SDL_QUIT == g->event.type) || (SDL_KEYDOWN == g->event.type && SDL_SCANCODE_ESCAPE == g->event.key.keysym.scancode))
 			return (-1);
 	else if (g->event.type == SDL_KEYDOWN)
 	{
@@ -149,32 +153,33 @@ int			interactive_elem(t_wolf *wolf)
 		g->event.key.keysym.sym == SDLK_a ||g->event.key.keysym.sym == SDLK_d)
 			do_move(wolf);
 	}
+	return (0);
 }
 
 void	do_move(t_wolf *wolf)
 {
-	double	frame_time;
+	// double	frame_time;
 
-	frame_time = get_fps(wolf);
-	wolf->player->move_sp = frame_time * 5.0;
-	wolf->player->rot_speed = frame_time * 3.0;
+	// frame_time = get_fps(wolf);
+	// wolf->player->move_sp = frame_time * 5.0;
+	// wolf->player->rot_speed = frame_time * 3.0;
 	if (wolf->graph->event.key.keysym.sym == SDLK_w)
 	{
 		if (wolf->map->map[(int)(wolf->player->pos_x + wolf->player->dir_x * wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
 			wolf->player->pos_x += wolf->player->dir_x * wolf->player->move_sp;
-		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_x + wolf->player->dir_x * wolf->player->move_sp)] == 0)
+		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_y + wolf->player->dir_y * wolf->player->move_sp)] == 0)
 			wolf->player->pos_y += wolf->player->dir_y * wolf->player->move_sp;
 	}
-	if ((wolf->graph->event.key.keysym.sym == SDLK_s))
+	if (wolf->graph->event.key.keysym.sym == SDLK_s)
 	{
 		if (wolf->map->map[(int)(wolf->player->pos_x - wolf->player->dir_x * wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
 			wolf->player->pos_x -= wolf->player->dir_x * wolf->player->move_sp;
-		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_x - wolf->player->dir_x * wolf->player->move_sp)] == 0)
+		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_y - wolf->player->dir_y * wolf->player->move_sp)] == 0)
 			wolf->player->pos_y -= wolf->player->dir_y * wolf->player->move_sp;
 	}
-	if ((wolf->graph->event.key.keysym.sym == SDLK_a))
+	if (wolf->graph->event.key.keysym.sym == SDLK_d)
 		rotate_right(wolf);
-	if ((wolf->graph->event.key.keysym.sym == SDLK_d))
+	if (wolf->graph->event.key.keysym.sym == SDLK_a)
 		rotate_left(wolf);
 }
 
