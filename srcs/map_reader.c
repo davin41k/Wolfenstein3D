@@ -20,13 +20,12 @@ int		**read_map(t_wolf *wolf)
 	int		idx;
 
 	idx = -1;
-	fd = open (wolf->file_name, O_RDONLY);
+	fd = open(wolf->file_name, O_RDONLY);
 	map = init_map_array();
 	while (get_next_line(fd, &line))
 	{
 		map[++idx] = get_array_line(line);
 	}
-
 	return (map);
 }
 
@@ -36,21 +35,19 @@ int		*get_array_line(char *line)
 	char	**splitted;
 	int		idx;
 
-	if(!(array = (int*)ft_memalloc(sizeof(int) * get_count_x(GET_NUM))))
+	if (!(array = (int*)ft_memalloc(sizeof(int) * get_count_x(GET_NUM))))
 		error_exit(MEM_ERR);
 	splitted = ft_strsplit(line, ' ');
 	idx = -1;
-	//printf("C_X:\t%d\n", get_count_x(GET_NUM));
 	while (splitted[++idx])
 	{
 		array[idx] = ft_getnbr(splitted[idx]);
-		//splitted++;
 	}
 	clean_text(splitted);
 	return (array);
 }
 
-int     **init_map_array(void)
+int		**init_map_array(void)
 {
 	int		**map;
 	int		idx;
@@ -60,16 +57,9 @@ int     **init_map_array(void)
 	idx = -1;
 	line_len = get_count_x(GET_NUM);
 	array_len = get_count_y(GET_NUM);
-
-	if(!(map = (int**)ft_memalloc(sizeof(int*) * (array_len + 1))))
+	if (!(map = (int**)ft_memalloc(sizeof(int*) * (array_len + 1))))
 		error_exit(MEM_ERR);
 	map[array_len] = NULL;
-
-	// while (++idx < array_len)
-	// {
-	// 	if(!(map[idx] = (int*)ft_memalloc(sizeof(int) * line_len)))
-	// 		error_exit(MEM_ERR);
-	// }
 	return (map);
 }
 
@@ -83,7 +73,7 @@ void	print_map(t_wolf *wolf)
 	array = wolf->map->map;
 	len = get_count_x(GET_NUM);
 	i = 0;
-	while(array[i])
+	while (array[i])
 	{
 		idx = -1;
 		while (++idx < len)

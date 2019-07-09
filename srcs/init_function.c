@@ -37,7 +37,7 @@ void	player_init(t_wolf *wolf, int x)
 	wolf->player->plane_x = 0;
 	wolf->player->plane_y = 0.66;
 	wolf->player->rot_speed = 3;
-	wolf->player->move_acceler = 5.0;
+	wolf->player->move_acceler =  (double)WALK;//5.0;
 	wolf->player->rot_acceler = 3.0;
 	// timing initialization
 	
@@ -61,17 +61,22 @@ void	sycle_init(t_wolf *wolf, int x)
 	// wolf->player->rot_acceler = 3.0;
 }
 
-// void	mlx_init(t_wolf *wolf)
-// {
-// 	t_graph		*mlx;
-// 	void		*data;
+void	textures_array_init(t_wolf *wolf)	// не нужно
+{
+	int		idx;
+	int		count_pixels;
 
-// 	mlx = wolf->mlx;
-// 	mlx->mlx_ptr = mlx_init();
-// 	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, wolf->scr_w, wolf->scr_h, "Wolf3D");
-// 	mlx->img = mlx_new_image(mlx->mlx_ptr, wolf->scr_w, wolf->scr_h);
-// 	data = (int*)mlx_get_data_addr(mlx->img,)
-// }
+	// if (!(wolf->textures = (int**)ft_memalloc(sizeof(int*) * (TEXTURES_COUNT + 1))))
+	// 	error_exit(MEM_ERR);
+	idx = -1;
+	count_pixels = TEXTURES_W * TEXTURES_H;
+	while (++idx < TEXTURES_COUNT)
+	{
+		if (!(wolf->textures[idx] = (int*)ft_memalloc(sizeof(int) * count_pixels)))
+			error_exit(MEM_ERR);
+	}
+	wolf->textures[idx] = NULL;
+}
 
 void	sdl_init(t_wolf *wolf)
 {
@@ -84,7 +89,10 @@ void	sdl_init(t_wolf *wolf)
 	100, wolf->scr_w, wolf->scr_h, SDL_WINDOW_SHOWN);
 	if (graph->win == NULL)
 		error_exit(MEM_ERR);
-	graph->render = SDL_CreateRenderer(graph->win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	graph->render = SDL_CreateRenderer(graph->win, -1,
+	SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (graph->render == NULL)
 		error_exit(MEM_ERR);
+	// graph->screen = SDL_GetWindowSurface(graph->win); SEGFOLT
+	// graph->scr_pixels = (int*)graph->screen->pixels;
 }

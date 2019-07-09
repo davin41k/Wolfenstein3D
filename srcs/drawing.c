@@ -11,32 +11,36 @@
 /* ************************************************************************** */
 
 #include "../includes/wolf.h"
-//	2
-void	do_step(t_wolf *wolf)
+
+void		do_step(t_wolf *wolf)
 {
 	if (wolf->player->raydir_x < 0)
 	{
 		wolf->player->step_x = -1;
-		wolf->player->side_dst_x = (wolf->player->pos_x - wolf->map->map_x) * wolf->player->dist_dx;
+		wolf->player->side_dst_x = (wolf->player->pos_x - wolf->map->map_x)
+		* wolf->player->dist_dx;
 	}
 	else
 	{
 		wolf->player->step_x = 1;
-		wolf->player->side_dst_x = (wolf->map->map_x + 1.0 - wolf->player->pos_x) * wolf->player->dist_dx;
+		wolf->player->side_dst_x = (wolf->map->map_x + 1.0 -
+		wolf->player->pos_x) * wolf->player->dist_dx;
 	}
 	if (wolf->player->raydir_y < 0)
 	{
 		wolf->player->step_y = -1;
-		wolf->player->side_dst_y = (wolf->player->pos_y - wolf->map->map_y) * wolf->player->dist_dy;
+		wolf->player->side_dst_y = (wolf->player->pos_y - wolf->map->map_y)
+		* wolf->player->dist_dy;
 	}
 	else
 	{
 		wolf->player->step_y = 1;
-		wolf->player->side_dst_y = (wolf->map->map_y + 1.0 - wolf->player->pos_y) * wolf->player->dist_dy;
-	}	
+		wolf->player->side_dst_y = (wolf->map->map_y + 1.0 -
+		wolf->player->pos_y) * wolf->player->dist_dy;
+	}
 }
-//	3
-void	do_dda(t_wolf *wolf)
+
+void		do_dda(t_wolf *wolf)
 {
 	while (wolf->player->hit == 0)
 	{
@@ -56,18 +60,18 @@ void	do_dda(t_wolf *wolf)
 			wolf->player->hit = 1;
 	}
 }
-//4
-void	calc_cam_distance(t_wolf *wolf)
+
+void		calc_cam_distance(t_wolf *wolf)
 {
-	if (wolf->player->hit_side == 0) // !
+	if (wolf->player->hit_side == 0)
 		wolf->player->pwall_dst = (wolf->map->map_x - wolf->player->pos_x
 		+ (1 - wolf->player->step_x) / 2) / wolf->player->raydir_x;
 	else
 		wolf->player->pwall_dst = (wolf->map->map_y - wolf->player->pos_y
 		+ (1 - wolf->player->step_y) / 2) / wolf->player->raydir_y;
 }
-//5
-void	calc_line_height(t_wolf *wolf)
+
+void		calc_line_height(t_wolf *wolf)
 {
 	int		line_height;
 	int		start;
@@ -84,18 +88,18 @@ void	calc_line_height(t_wolf *wolf)
 	wolf->player->start_draw = start;
 	wolf->player->end_draw = end;
 }
-//	6
-void	get_wall_color(t_wolf *wolf)
+
+void		get_wall_color(t_wolf *wolf)
 {
 	int		color;
 
 	color = wolf->map->map[wolf->map->map_x][wolf->map->map_y];
 	if (color == 1)
-		wolf->color->color = 16711680;//0xFF0000;
+		wolf->color->color = 0xFF0000;//16711680;//0xFF0000;
 	else if (color == 2)
-		wolf->color->color = 65280;//0x008000;
+		wolf->color->color = 0x008000;//65280;//0x008000;
 	else if (color == 3)
-		wolf->color->color = 255;//0x0000FF;
+		wolf->color->color = 0x0000FF;//255;//0x0000FF;
 	else if (color == 4)
 		wolf->color->color = 0;//0xFFFFFF;
 	 else if (color == 5)
@@ -104,20 +108,19 @@ void	get_wall_color(t_wolf *wolf)
 		wolf->color->color = 16776960;
 	if (wolf->player->hit_side == 1)
 		wolf->color->color /= 1.5;
-	SDL_SetRenderDrawColor(wolf->graph->render, wolf->color->color >> 16 , wolf->color->color >> 8, wolf->color->color, 255);
-	// printf("COLOR IS:\t%d\n", wolf->color->color);
+	SDL_SetRenderDrawColor(wolf->graph->render, wolf->color->color >> 16,
+	wolf->color->color >> 8, wolf->color->color, 255);
 }
-// 7
-void	wall_drawing(t_wolf *wolf) //exception
+
+void		wall_drawing(t_wolf *wolf)
 {
-	//SDL_RenderDrawLine(wolf->graph->render, x, wolf->player->start_draw, x, wolf->player->end_draw);
 	SDL_RenderPresent(wolf->graph->render);
 	SDL_SetRenderDrawColor(wolf->graph->render, 0,  0, 0, 255);
 	SDL_RenderClear(wolf->graph->render);
 
 }
 //8
-double	get_fps(t_wolf *wolf)
+double		get_fps(t_wolf *wolf)
 {
 	double			time;
 	static	double	old_time;
@@ -138,74 +141,118 @@ void		set_move_speed(t_wolf *wolf, double fps)
 	wolf->player->rot_speed = frame_time * wolf->player->rot_acceler;
 }
 
-//	9			re -1 == break
 int			interactive_elem(t_wolf *wolf)
 {
 	t_graph		*g;
 
 	g = wolf->graph;
 	SDL_PollEvent(&g->event);
-	if((SDL_QUIT == g->event.type) || (SDL_KEYDOWN == g->event.type && SDL_SCANCODE_ESCAPE == g->event.key.keysym.scancode))
+	if((SDL_QUIT == g->event.type) || (SDL_KEYDOWN == g->event.type &&
+	SDL_SCANCODE_ESCAPE == g->event.key.keysym.scancode))
 			return (-1);
 	else if (g->event.type == SDL_KEYDOWN)
 	{
-		if (g->event.key.keysym.sym == SDLK_w || g->event.key.keysym.sym == SDLK_s ||
-		g->event.key.keysym.sym == SDLK_a ||g->event.key.keysym.sym == SDLK_d)
+		if (g->event.key.keysym.sym == SDLK_w || g->event.key.keysym.sym ==
+		SDLK_s ||g->event.key.keysym.sym == SDLK_a ||
+		g->event.key.keysym.sym == SDLK_d)
 			do_move(wolf);
+		else if (g->event.key.keysym.sym == SDLK_LSHIFT)
+			wolf->player->move_acceler = (double)RUN;
 	}
+	else if (g->event.type == SDL_MOUSEMOTION)
+		mouse_rotation(wolf, g->event.button.x);
+	else if (g->event.type == SDL_KEYUP)
+		if (g->event.key.keysym.sym == SDLK_LSHIFT)
+			wolf->player->move_acceler = (double)WALK;
 	return (0);
 }
 
-void	do_move(t_wolf *wolf)
+void		do_move(t_wolf *wolf)
 {
-	// double	frame_time;
-
-	// frame_time = get_fps(wolf);
-	// wolf->player->move_sp = frame_time * 5.0;
-	// wolf->player->rot_speed = frame_time * 3.0;
 	if (wolf->graph->event.key.keysym.sym == SDLK_w)
-	{
-		if (wolf->map->map[(int)(wolf->player->pos_x + wolf->player->dir_x * wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
-			wolf->player->pos_x += wolf->player->dir_x * wolf->player->move_sp;
-		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_y + wolf->player->dir_y * wolf->player->move_sp)] == 0)
-			wolf->player->pos_y += wolf->player->dir_y * wolf->player->move_sp;
-	}
+		move_forward(wolf);
 	if (wolf->graph->event.key.keysym.sym == SDLK_s)
-	{
-		if (wolf->map->map[(int)(wolf->player->pos_x - wolf->player->dir_x * wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
-			wolf->player->pos_x -= wolf->player->dir_x * wolf->player->move_sp;
-		if (wolf->map->map[(int)(wolf->player->pos_x)][(int)(wolf->player->pos_y - wolf->player->dir_y * wolf->player->move_sp)] == 0)
-			wolf->player->pos_y -= wolf->player->dir_y * wolf->player->move_sp;
-	}
+		move_back(wolf);
 	if (wolf->graph->event.key.keysym.sym == SDLK_d)
 		rotate_right(wolf);
 	if (wolf->graph->event.key.keysym.sym == SDLK_a)
 		rotate_left(wolf);
 }
 
-void	rotate_right(t_wolf *wolf)
+void		move_forward(t_wolf *wolf)
+{
+	if (wolf->map->map[(int)(wolf->player->pos_x + wolf->player->dir_x *
+		wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
+			wolf->player->pos_x += wolf->player->dir_x * wolf->player->move_sp;
+	if (wolf->map->map[(int)(wolf->player->pos_x)]
+	[(int)(wolf->player->pos_y + wolf->player->dir_y *
+	wolf->player->move_sp)] == 0)
+		wolf->player->pos_y += wolf->player->dir_y * wolf->player->move_sp;
+}
+
+void		move_back(t_wolf *wolf)
+{
+	if (wolf->map->map[(int)(wolf->player->pos_x - wolf->player->dir_x *
+		wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
+			wolf->player->pos_x -= wolf->player->dir_x * wolf->player->move_sp;
+	if (wolf->map->map[(int)(wolf->player->pos_x)]
+	[(int)(wolf->player->pos_y - wolf->player->dir_y *
+	wolf->player->move_sp)] == 0)
+		wolf->player->pos_y -= wolf->player->dir_y *
+		wolf->player->move_sp;
+}
+
+void		rotate_right(t_wolf *wolf)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
 	old_dir_x = wolf->player->dir_x;
 	old_plane_x =wolf->player->plane_x;
-	wolf->player->dir_x =  wolf->player->dir_x * cos(-wolf->player->rot_speed) - wolf->player->dir_y * sin(-wolf->player->rot_speed);
-	wolf->player->dir_y = old_dir_x * sin(-wolf->player->rot_speed) + wolf->player->dir_y * cos(-wolf->player->rot_speed);
-	wolf->player->plane_x = wolf->player->plane_x * cos(-wolf->player->rot_speed) - wolf->player->plane_y * sin(-wolf->player->rot_speed);
-	wolf->player->plane_y = old_plane_x * sin(-wolf->player->rot_speed) + wolf->player->plane_y * cos(-wolf->player->rot_speed);
+	wolf->player->dir_x =  wolf->player->dir_x * cos(-wolf->player->rot_speed)
+	- wolf->player->dir_y * sin(-wolf->player->rot_speed);
+	wolf->player->dir_y = old_dir_x * sin(-wolf->player->rot_speed) +
+	wolf->player->dir_y * cos(-wolf->player->rot_speed);
+	wolf->player->plane_x = wolf->player->plane_x *
+	cos(-wolf->player->rot_speed) - wolf->player->plane_y
+	* sin(-wolf->player->rot_speed);
+	wolf->player->plane_y = old_plane_x * sin(-wolf->player->rot_speed)
+	+ wolf->player->plane_y * cos(-wolf->player->rot_speed);
 
 }
 
-void	rotate_left(t_wolf *wolf)
+void		rotate_left(t_wolf *wolf)
 {
 	double	old_dir_x;
 	double	old_plane_x;
 
 	old_dir_x = wolf->player->dir_x;
 	old_plane_x =wolf->player->plane_x;
-	wolf->player->dir_x =  wolf->player->dir_x * cos(wolf->player->rot_speed) - wolf->player->dir_y * sin(wolf->player->rot_speed);
-	wolf->player->dir_y = old_dir_x * sin(wolf->player->rot_speed) + wolf->player->dir_y * cos(wolf->player->rot_speed);
-	wolf->player->plane_x = wolf->player->plane_x * cos(wolf->player->rot_speed) - wolf->player->plane_y * sin(wolf->player->rot_speed);
-	wolf->player->plane_y = old_plane_x * sin(wolf->player->rot_speed) + wolf->player->plane_y * cos(wolf->player->rot_speed);
+	wolf->player->dir_x =  wolf->player->dir_x * cos(wolf->player->rot_speed)
+	- wolf->player->dir_y * sin(wolf->player->rot_speed);
+	wolf->player->dir_y = old_dir_x * sin(wolf->player->rot_speed) +
+	wolf->player->dir_y * cos(wolf->player->rot_speed);
+	wolf->player->plane_x = wolf->player->plane_x *
+	cos(wolf->player->rot_speed) - wolf->player->plane_y *
+	sin(wolf->player->rot_speed);
+	wolf->player->plane_y = old_plane_x * sin(wolf->player->rot_speed) +
+	wolf->player->plane_y * cos(wolf->player->rot_speed);
+}
+
+void		mouse_rotation(t_wolf *wolf, int x)
+{
+	static	int		old_x;
+
+	if (!old_x)
+		old_x = x;
+	if (old_x < x)
+	{
+		rotate_right(wolf);
+		old_x = x;
+	}
+	else if (old_x > x)
+	{
+		rotate_left(wolf);
+		old_x = x;
+	}
 }

@@ -36,6 +36,7 @@
 # define THREAD_ERR		1
 # define MEM_ERR		2
 # define MAP_ERR		3
+# define LOAD_ERR		4
 
 # define PALETTE_ONE	0
 # define PALETTE_TWO	1
@@ -43,21 +44,16 @@
 # define OFF			0
 # define MAX_ITTER		65
 
-# define PLUS_KEY		24
-# define MINUS_KEY		27
-# define MULTIPLE_KEY	67
-# define DIVISION_KEY	75
-# define ESCAPE			53
-# define TAB			48
-# define SPACE			49
-# define SCROLL_UP		4
-# define SCROLL_DOWN	5
-# define I_KEY			34
+# define TEXTURES_COUNT	8
+# define TEXTURES_W		64
+# define TEXTURES_H		64
 
-# define UP_KEY			126
-# define DOWN_KEY		125
-# define LEFT_KEY		123
-# define RIGHT_KEY		124
+# define WALK			5
+# define RUN			10
+# define EASY_ROTATE	1
+# define FAST_ROTATE	3
+
+
 
 # include <mlx.h>
 # include <math.h>
@@ -77,6 +73,8 @@ typedef	struct		s_graphics
 	SDL_Window		*win;
 	SDL_Renderer	*render;
 	SDL_Event		event;
+	SDL_Surface		*screen;
+	int				*scr_pixels;
 }					t_graph;
 
 typedef	struct		s_player
@@ -106,6 +104,9 @@ typedef	struct		s_player
 	int				line_height;
 	int				start_draw;
 	int				end_draw;
+	int				textr_x;
+	int				textr_y;
+	int				hit_wallx;
 }					t_player;
 
 typedef	struct		s_map
@@ -130,6 +131,9 @@ typedef	struct		s_wolf
 	int				scr_h;
 	int				scr_w;
 	char			*file_name;
+	int				*textures[TEXTURES_COUNT];
+	int				text_numb;
+
 	t_graph			*graph;
 	t_player		*player;
 	t_map			*map;
@@ -146,13 +150,16 @@ void	error_exit(int errno);
 void	clean_text(char **splitted);
 
 	//	***NORMINATTE***
-int		count_x(char *line);
-int		get_count_x(int x);
-int		get_count_y(int y);
+
 int		norme_norminatte(int first_line, char *line, int fd);
 int		check_norme(t_wolf *wolf);
 int		check_line_correct(char *line);
 int		is_number(char *str);
+
+	//	***NORMINETTE_TWO***
+int		count_x(char *line);
+int		get_count_x(int x);
+int		get_count_y(int y);
 
 	//	***MAP_READER***
 int     **init_map_array(void);
@@ -165,6 +172,7 @@ int		wolf_init(t_wolf *wolf, char *file_name);
 void	player_init(t_wolf *wolf, int x);
 void	sdl_init(t_wolf *wolf);
 void	sycle_init(t_wolf *wolf, int x);
+void	textures_array_init(t_wolf *wolf);
 
 	//	***DRAWING***
 void	do_step(t_wolf *wolf);
@@ -179,6 +187,9 @@ void	do_move(t_wolf *wolf);
 void	rotate_right(t_wolf *wolf);
 void	rotate_left(t_wolf *wolf);
 void	set_move_speed(t_wolf *wolf, double fps);
+void	move_forward(t_wolf *wolf);
+void	move_back(t_wolf *wolf);
+void		mouse_rotation(t_wolf *wolf, int x);
 
 // ***MAIN***
 void	do_work(t_wolf *wolf);
