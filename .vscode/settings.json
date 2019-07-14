@@ -3,6 +3,7 @@
         "wolf.h": "c",
         "pthread.h": "c",
         "chrono": "c",
-        "__locale": "c"
+        "__locale": "c",
+        "sdl.h": "c"
     }
 }

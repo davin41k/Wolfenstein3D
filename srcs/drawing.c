@@ -117,7 +117,11 @@ void		wall_drawing(t_wolf *wolf)
 	SDL_RenderPresent(wolf->graph->render);
 	SDL_SetRenderDrawColor(wolf->graph->render, 0,  0, 0, 255);
 	SDL_RenderClear(wolf->graph->render);
-
+}
+void		texture_wall_drawing(t_wolf *wolf)
+{
+	//SDL_BlitSurface(wolf->graph->screen, NULL, wolf->graph->win, NULL);
+	SDL_UpdateWindowSurface(wolf->graph->win);
 }
 //8
 double		get_fps(t_wolf *wolf)
@@ -136,7 +140,10 @@ void		set_move_speed(t_wolf *wolf, double fps)
 {
 	double	frame_time;
 	frame_time = get_fps(wolf);
-	wall_drawing(wolf);
+	if (wolf->graph->wall_text_preset == FLAT_TEXT)
+		wall_drawing(wolf);
+	else
+		texture_wall_drawing(wolf);
 	wolf->player->move_sp = frame_time * wolf->player->move_acceler;
 	wolf->player->rot_speed = frame_time * wolf->player->rot_acceler;
 }

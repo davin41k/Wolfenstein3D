@@ -25,9 +25,9 @@ int		get_textures_pix_count(void)
 int		get_texel(void *pixels, int idx) //get_color_pix
 {
 	char	*pix;
-	int		red;
-	int		green;
-	int		blue;
+	unsigned	int		red;
+	unsigned	int		green;
+	unsigned	int		blue;
 
 	pix = pixels;
 	blue = pix[idx];
@@ -36,7 +36,7 @@ int		get_texel(void *pixels, int idx) //get_color_pix
 	return (red | green | blue);
 }
 
-void	load_texture(t_wolf *wolf, int text_numb, char	*text_path)
+void	load_texture(t_wolf *wolf, char	*text_path)
 {
 	static	int		texture_numb;
 	SDL_Surface		*img;
@@ -48,26 +48,32 @@ void	load_texture(t_wolf *wolf, int text_numb, char	*text_path)
 	idx = -1;
 	if(!(pixels = (int*)ft_memalloc(sizeof(int) * count_pix)))
 		error_exit(MEM_ERR);
-	if (img = IMG_Load(text_path) == NULL)
+	img = SDL_LoadBMP(text_path);
+	if (img == NULL)
 		error_exit(LOAD_ERR);
 	while (++idx < count_pix)
-		pixels[idx] = get_texel(img->pixels, idx * 4)
-	SDL_FreeSurface(img);
-	wolf->textures[text_numb++] = pixels;
+		pixels[idx] = get_texel(img->pixels, idx * 4);
+	wolf->textures[texture_numb++] = pixels;
+	SDL_FreeSurface(img); //lSDL
 
 }
 
 void	load_all_textures (t_wolf *wolf)
 {
-	int		idx;
-
-	idx = -1;
-	load_texture(wolf->textures[++idx],"../pic/0.png");
-	load_texture(wolf->textures[++idx],"../pic/1.png");
-	load_texture(wolf->textures[++idx],"../pic/2.png");
-	load_texture(wolf->textures[++idx],"../pic/3.png");
-	load_texture(wolf->textures[++idx],"../pic/4.png");
-	load_texture(wolf->textures[++idx],"../pic/5.png");
-	load_texture(wolf->textures[++idx],"../pic/6.png");
-	load_texture(wolf->textures[++idx],"../pic/7.png");
+//	load_texture(wolf, "../bluestone/witcher.bmp");
+	load_texture(wolf, "./bluestone/colorstone.bmp");
+	load_texture(wolf, "./bluestone/bluestone.bmp");
+	load_texture(wolf, "./bluestone/eagle.bmp");
+	load_texture(wolf, "./bluestone/greystone.bmp");
+	load_texture(wolf, "./bluestone/mossy.bmp");
+	load_texture(wolf, "./bluestone/redbrick.bmp");
+	load_texture(wolf, "./bluestone/wood.bmp");
+	// load_texture(wolf, "../pic/0.png");
+	// load_texture(wolf, "../pic/1.png");
+	// load_texture(wolf, "../pic/2.png");
+	// load_texture(wolf, "../pic/3.png");
+	// load_texture(wolf, "../pic/4.png");
+	// load_texture(wolf,"../pic/5.png");
+	// load_texture(wolf, "../pic/6.png");
+	// load_texture(wolf, "../pic/7.png");
 }

@@ -12,7 +12,19 @@
 
 #include "../includes/wolf.h"
 
-int		check_norme(t_wolf *wolf)
+static	void	check_map_correct(t_wolf *wolf)
+{
+	int		count_x;
+	int		count_y;
+
+	count_x = get_count_x(GET_NUM);
+	count_y = get_count_y(GET_NUM);
+	printf("%d, %d  \n",get_count_x(GET_NUM), get_count_y(GET_NUM));
+	if (count_x < 4 || count_y < 4 || count_x > 120 ||  count_y > 120)
+		error_exit(INCORRECT_MAP);
+}
+
+int				check_norme(t_wolf *wolf)
 {
 	int		fd;
 	char	*line;
@@ -34,11 +46,12 @@ int		check_norme(t_wolf *wolf)
 	}
 	free(line);
 	get_count_x(first_line);
+	check_map_correct(wolf);
 	close(fd);
 	return (1);
 }
 
-int		norme_norminatte(int first_line, char *line, int fd)
+int				norme_norminatte(int first_line, char *line, int fd)
 {
 	if (!check_line_correct(line))
 	{
@@ -55,7 +68,7 @@ int		norme_norminatte(int first_line, char *line, int fd)
 	return (1);
 }
 
-int		check_line_correct(char *line)
+int				check_line_correct(char *line)
 {
 	char	**splitted;
 	int		idx;
@@ -74,7 +87,7 @@ int		check_line_correct(char *line)
 	return (1);
 }
 
-int		is_number(char *str)
+int				is_number(char *str)
 {
 	//int		i = ft_getnbr(str);
 	while (*str)

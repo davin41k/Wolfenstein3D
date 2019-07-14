@@ -49,6 +49,8 @@ void	error_exit(int errno)
 		ft_putendl("memory error");
 	else if (errno == MAP_ERR)
 		ft_putendl("error: map is not correct");
+	else if (errno == INCORRECT_MAP)
+		ft_putendl("error: map is too big or too long");
 	else if (errno == LOAD_ERR)
 		ft_putendl("error: textures was not load");
 	exit(0);

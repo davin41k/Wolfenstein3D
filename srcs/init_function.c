@@ -14,8 +14,8 @@
 
 int		wolf_init(t_wolf *wolf, char *file_name)
 {
-	wolf->scr_w = 640;
-	wolf->scr_h = 480;
+	wolf->scr_w = WIN_HD_WIDTH;
+	wolf->scr_h = WIN_HD_HEIGHT;
 	wolf->file_name = file_name;
 	if(!(wolf->graph = (t_graph*)malloc(sizeof(t_graph))))
 		error_exit(MEM_ERR);
@@ -30,12 +30,14 @@ int		wolf_init(t_wolf *wolf, char *file_name)
 //	1
 void	player_init(t_wolf *wolf, int x)
 {
-	wolf->player->pos_x = 22; //22
-	wolf->player->pos_y = 12; // 12
+	plant_player(wolf);
+	printf("P_POS:\t%f\t%f\n", wolf->player->pos_x,  wolf->player->pos_y);
+	//wolf->player->pos_x = 22; //22
+	//wolf->player->pos_y = 12; // 12
 	wolf->player->dir_x = -1;
 	wolf->player->dir_y = 0;
 	wolf->player->plane_x = 0;
-	wolf->player->plane_y = 0.66;
+	wolf->player->plane_y = 0.9; // 0.66
 	wolf->player->rot_speed = 3;
 	wolf->player->move_acceler =  (double)WALK;//5.0;
 	wolf->player->rot_acceler = 3.0;
@@ -85,14 +87,42 @@ void	sdl_init(t_wolf *wolf)
 	if ((SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0))
 		error_exit(MEM_ERR);
 	graph = wolf->graph;
-	graph->win = SDL_CreateWindow("Wolf3D", 100,
-	100, wolf->scr_w, wolf->scr_h, SDL_WINDOW_SHOWN);
+	graph->win = SDL_CreateWindow("Wolf3D", 250,
+	250, wolf->scr_w, wolf->scr_h, SDL_WINDOW_SHOWN);
 	if (graph->win == NULL)
 		error_exit(MEM_ERR);
+	//graph->win_surface = SDL_GetWindowSurface(graph->win);
 	graph->render = SDL_CreateRenderer(graph->win, -1,
 	SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
 	if (graph->render == NULL)
 		error_exit(MEM_ERR);
-	// graph->screen = SDL_GetWindowSurface(graph->win); SEGFOLT
-	// graph->scr_pixels = (int*)graph->screen->pixels;
+	graph->screen = SDL_CreateRGBSurface(0, wolf->scr_w, wolf->scr_h, 32,
+	0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+	if (graph->screen == NULL)
+		error_exit(MEM_ERR);
+	// graph->scr_pixels = (int)graph->screen->pixels;
+	graph->wall_text_preset = FLAT_TEXT;
+	// printf("%p | %p\n", graph->screen, graph->win);
 }
+void	sdl_texture_init(t_wolf *wolf)
+{
+	t_graph		*graph;
+
+	if ((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0))
+		error_exit(MEM_ERR);
+	graph = wolf->graph;
+	graph->win = SDL_CreateWindow("Wolf3D", 250,
+	250, wolf->scr_w, wolf->scr_h, SDL_WINDOW_SHOWN);
+	if (graph->win == NULL)
+		error_exit(MEM_ERR);
+	graph->win_surface = SDL_GetWindowSurface(graph->win);
+	// graph->screen = SDL_CreateRGBSurface(0, wolf->scr_w, wolf->scr_h, 32,
+	// 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+	// if (graph->screen == NULL)
+	// 	error_exit(MEM_ERR);
+	graph->scr_pixels = (int*)graph->win_surface->pixels;
+	graph->wall_text_preset = SPRITE_TEXT;
+	printf("%p | %p\n", graph->win_surface, graph->scr_pixels);
+}
+

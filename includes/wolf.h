@@ -17,10 +17,8 @@
 
 # define WIN_FHD_HEIGHT 1080
 # define WIN_FHD_WIDTH	1080
-# define WIN_HD_HEIGHT	560
-# define WIN_HD_WIDTH	560
-# define W				512
-# define H				384
+# define WIN_HD_HEIGHT	720
+# define WIN_HD_WIDTH	1280
 
 # define GET_NUM		0
 # define INCREASE		1
@@ -36,7 +34,8 @@
 # define THREAD_ERR		1
 # define MEM_ERR		2
 # define MAP_ERR		3
-# define LOAD_ERR		4
+# define INCORRECT_MAP	4
+# define LOAD_ERR		5
 
 # define PALETTE_ONE	0
 # define PALETTE_TWO	1
@@ -47,6 +46,8 @@
 # define TEXTURES_COUNT	8
 # define TEXTURES_W		64
 # define TEXTURES_H		64
+# define FLAT_TEXT		0
+# define SPRITE_TEXT	1
 
 # define WALK			5
 # define RUN			10
@@ -66,7 +67,7 @@
 # include "../get_next_line/get_next_line.h"
 # include <unistd.h>
 # include <pthread.h>
-# include <SDL2/SDL.h>
+# include "SDL.h"
 
 typedef	struct		s_graphics
 {
@@ -74,7 +75,9 @@ typedef	struct		s_graphics
 	SDL_Renderer	*render;
 	SDL_Event		event;
 	SDL_Surface		*screen;
+	SDL_Surface		*win_surface;
 	int				*scr_pixels;
+	int				wall_text_preset;
 }					t_graph;
 
 typedef	struct		s_player
@@ -173,6 +176,7 @@ void	player_init(t_wolf *wolf, int x);
 void	sdl_init(t_wolf *wolf);
 void	sycle_init(t_wolf *wolf, int x);
 void	textures_array_init(t_wolf *wolf);
+void	sdl_texture_init(t_wolf *wolf);
 
 	//	***DRAWING***
 void	do_step(t_wolf *wolf);
@@ -189,9 +193,24 @@ void	rotate_left(t_wolf *wolf);
 void	set_move_speed(t_wolf *wolf, double fps);
 void	move_forward(t_wolf *wolf);
 void	move_back(t_wolf *wolf);
-void		mouse_rotation(t_wolf *wolf, int x);
+void	mouse_rotation(t_wolf *wolf, int x);
+void	texture_wall_drawing(t_wolf *wolf);
+
+	//	***DRAWING_TWO***
+void	calc_ray_texture_hit(t_wolf *wolf);
+void	set_line_pixels(t_wolf *wolf, int texture_numb, int x);
+void	clean_buff_screen(t_wolf *wolf);
+
+	//	***DRAW_TEXTURES***
+void	load_all_textures (t_wolf *wolf);
 
 // ***MAIN***
 void	do_work(t_wolf *wolf);
+
+//	***PLAYER***
+void	plant_player(t_wolf *wolf);
+
+
+void	show_picture(t_wolf *wolf);
 
 #endif

@@ -3,14 +3,14 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**",
-                "~/Library/Frameworks/SDL2.framework/Versions/A/Headers/**"
+                "${workspaceFolder}",
+                "~/Library/Frameworks/SDL2.framework/Headers"
             ],
             "defines": [],
             "macFrameworkPath": [
-                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks"
+                "${workspaceFolder}/**"
             ],
-            "compilerPath": "/usr/bin/clang",
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"

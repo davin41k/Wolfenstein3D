@@ -14,12 +14,12 @@
 
 
 //	1
-void	calc_ray_texture_hit(t_wolf *wolf)
+void	calc_ray_texture_hit(t_wolf *wolf) // мб просто находит 1 Х и все
 {
 	t_player	*p;
 //	int			text_numb;
 
-	wolf->text_numb = wolf->map->map[wolf->map->map_x][wolf->map->map_y];
+	wolf->text_numb = wolf->map->map[wolf->map->map_x][wolf->map->map_y] - 1;
 	p = wolf->player;
 
 	if (!p->hit_side)
@@ -38,22 +38,24 @@ void	calc_ray_texture_hit(t_wolf *wolf)
 void	set_line_pixels(t_wolf *wolf, int texture_numb, int x)
 {
 	int			color;
-	int			tmp;
+	int			tmp; //d
 	int			y;
 	t_player	*p;
-
 	p = wolf->player;
 	y = wolf->player->start_draw - 1;
 	while (++y < wolf->player->end_draw)
 	{
 		tmp = y * 256 - wolf->scr_h * 128 + wolf->player->line_height * 128;
 		p->textr_y = ((tmp * TEXTURES_H) / wolf->player->line_height) / 256;
-		color = wolf->textures[texture_numb][TEXTURES_H * p->textr_y];
+		if (texture_numb < 0)
+			color = 0;
+		else
+			color = 0x00FFFF;//wolf->textures[texture_numb][TEXTURES_H * p->textr_y + p->textr_x];
 		if (p->hit_side == 1)
 			color /= 1.4;
-		wolf->graph->scr_pixels[y * wolf->scr_w - (wolf->scr_w - x)] = color; // записть ;нужного; текселя
+		// printf("Коодината:%d\t%d\n", y, wolf->player->end_draw);
+		wolf->graph->scr_pixels[x + y * wolf->scr_w] = color;//[y * wolf->scr_w - (wolf->scr_w - x)] = color; // записть ;нужного; текселя
 	}
-
 }
 
 void	clean_buff_screen(t_wolf *wolf)
@@ -61,6 +63,7 @@ void	clean_buff_screen(t_wolf *wolf)
 	int		idx;
 	int		y_count;
 	idx = -1;
+	y_count = -1;
 	while (++y_count < wolf->scr_w)
 	{
 		idx = -1;
@@ -69,4 +72,26 @@ void	clean_buff_screen(t_wolf *wolf)
 			wolf->graph->scr_pixels[idx + y_count * wolf->scr_w] = 0;
 		}
 	}
+}
+
+void	show_picture(t_wolf *wolf)
+{
+	int		x;
+	int		y;
+	int		last_pix;
+	int		*arr;
+int			i;
+	i = x = y = -1;
+	last_pix = TEXTURES_W * TEXTURES_H;
+	arr =  wolf->graph->scr_pixels;
+	while (++y < 64)
+	{
+		x = -1;
+		while (++x < 64)
+		{
+			i++;
+			arr[x + y * wolf->scr_w] = wolf->textures[0][TEXTURES_W * y + x];
+		}
+	}
+	SDL_UpdateWindowSurface(wolf->graph->win);
 }
