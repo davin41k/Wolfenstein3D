@@ -40,8 +40,11 @@ void	error_exit(int errno)
 {
 	if (errno == USAGE)
 	{
-		ft_putendl("usage:    ./fractol a_number:");
-		ft_putendl("1 - Mandelbrot, 2 - Julia, 3 - Burning Ship");
+		ft_putendl("usage:    ./wolf3d a_map_file:");
+		ft_putendl("map dimension: min[4x4], max[120x120]");
+		ft_putendl("textures range between [0, 4]");
+		ft_putendl("[w, a, s, d] - move, left shift - acceleration");
+		ft_putendl("[t] - switch textures packs");
 	}
 	else if (errno == THREAD_ERR)
 		ft_putendl("thread error");
@@ -50,7 +53,7 @@ void	error_exit(int errno)
 	else if (errno == MAP_ERR)
 		ft_putendl("error: map is not correct");
 	else if (errno == INCORRECT_MAP)
-		ft_putendl("error: map is too big or too long");
+		ft_putendl("error: map is too big or too small");
 	else if (errno == LOAD_ERR)
 		ft_putendl("error: textures was not load");
 	exit(0);

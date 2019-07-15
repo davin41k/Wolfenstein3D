@@ -48,6 +48,8 @@
 # define TEXTURES_H		64
 # define FLAT_TEXT		0
 # define SPRITE_TEXT	1
+# define TEXT_PACK_ONE	0
+# define TEXT_PACK_TWO	4
 
 # define WALK			5
 # define RUN			10
@@ -76,7 +78,9 @@ typedef	struct		s_graphics
 	SDL_Event		event;
 	SDL_Surface		*screen;
 	SDL_Surface		*win_surface;
+	SDL_Texture		*texture;
 	int				*scr_pixels;
+	int				*pixs;
 	int				wall_text_preset;
 }					t_graph;
 
@@ -109,7 +113,7 @@ typedef	struct		s_player
 	int				end_draw;
 	int				textr_x;
 	int				textr_y;
-	int				hit_wallx;
+	double			hit_wallx; //int
 }					t_player;
 
 typedef	struct		s_map
@@ -136,7 +140,7 @@ typedef	struct		s_wolf
 	char			*file_name;
 	int				*textures[TEXTURES_COUNT];
 	int				text_numb;
-
+	int				text_pack;
 	t_graph			*graph;
 	t_player		*player;
 	t_map			*map;
@@ -169,6 +173,7 @@ int     **init_map_array(void);
 int		*get_array_line(char *line);
 void	print_map(t_wolf *wolf);
 int		**read_map(t_wolf *wolf);
+void	edges_check(t_wolf *wolf);
 
 	//	***INIT_FUNCTION***
 int		wolf_init(t_wolf *wolf, char *file_name);
@@ -195,11 +200,13 @@ void	move_forward(t_wolf *wolf);
 void	move_back(t_wolf *wolf);
 void	mouse_rotation(t_wolf *wolf, int x);
 void	texture_wall_drawing(t_wolf *wolf);
+void	change_text_pack(t_wolf *wolf);
 
 	//	***DRAWING_TWO***
 void	calc_ray_texture_hit(t_wolf *wolf);
 void	set_line_pixels(t_wolf *wolf, int texture_numb, int x);
 void	clean_buff_screen(t_wolf *wolf);
+void	update_screen(t_wolf *wolf);
 
 	//	***DRAW_TEXTURES***
 void	load_all_textures (t_wolf *wolf);

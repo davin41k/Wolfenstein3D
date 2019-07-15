@@ -19,16 +19,18 @@ int		main(int ac, char **av)
 
 	wolf_init(&wolf, av[1]);
 	
-	if (ac == 3 && ft_strstr(av[2], "-f"))
-		sdl_init(&wolf);
+	if (ac != 2)
+		error_exit(USAGE);
 	else
-		sdl_texture_init(&wolf);
+	sdl_texture_init(&wolf);
 	if (!check_norme(&wolf))
 		error_exit(MAP_ERR);
 	wolf.map->map = read_map(&wolf);
 	print_map(&wolf);
+	edges_check(&wolf);
+	print_map(&wolf);
 	load_all_textures(&wolf);
-	show_picture(&wolf);
+	//show_picture(&wolf);
 	do_work(&wolf);
 
 	return (0);
@@ -50,8 +52,9 @@ static	void	wall_text_calculation(t_wolf *wolf, int x)
 	calc_cam_distance(wolf);
 	calc_line_height(wolf);
 	//clean_buff_screen(wolf);
-	calc_ray_texture_hit(wolf);
-	set_line_pixels(wolf, wolf->text_numb, wolf->player->textr_x); // wolf->text_numb - 1
+	calc_ray_texture_hit(wolf);							//wallx
+	set_line_pixels(wolf, wolf->text_numb, x); // wolf->text_numb - 1
+	//update_screen(wolf);
 	//SDL_RenderDrawLine(wolf->graph->render, x, wolf->player->start_draw, x, wolf->player->end_draw);
 	//printf("DRAW LINE\n");
 	

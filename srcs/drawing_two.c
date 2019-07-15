@@ -20,19 +20,20 @@ void	calc_ray_texture_hit(t_wolf *wolf) // мб просто находит 1 Х
 //	int			text_numb;
 
 	wolf->text_numb = wolf->map->map[wolf->map->map_x][wolf->map->map_y] - 1;
+	wolf->text_numb += wolf->text_pack;
 	p = wolf->player;
 
-	if (!p->hit_side)
+	if (p->hit_side == 0)
 		p->hit_wallx = p->pos_y + p->pwall_dst * p->raydir_y;
 	else
 		p->hit_wallx = p->pos_x + p->pwall_dst * p->raydir_x;
-	p->hit_wallx -= floor(p->hit_wallx);
+	p->hit_wallx -= floor((p->hit_wallx));
 	p->textr_x = (int)(p->hit_wallx * (double)TEXTURES_W);
-	if (!p->hit_side && p->raydir_x > 0)
+	if (p->hit_side == 0 && p->raydir_x > 0)
 		p->textr_x = TEXTURES_W - p->textr_x - 1;
-	else if (p->hit_side == 1 && p->raydir_x < 0)
+	else if (p->hit_side == 1 && p->raydir_y < 0)
 		p->textr_x = TEXTURES_W - p->textr_x - 1;
-
+	//printf("| WALLX:\t%d", p->hit_wallx);
 }
 
 void	set_line_pixels(t_wolf *wolf, int texture_numb, int x)
@@ -50,11 +51,13 @@ void	set_line_pixels(t_wolf *wolf, int texture_numb, int x)
 		if (texture_numb < 0)
 			color = 0;
 		else
-			color = 0x00FFFF;//wolf->textures[texture_numb][TEXTURES_H * p->textr_y + p->textr_x];
+			color = wolf->textures[texture_numb][TEXTURES_H * p->textr_y + p->textr_x];
 		if (p->hit_side == 1)
-			color /= 1.4;
+			color /= 2;
+			// if ((TEXTURES_H * p->textr_y + p->textr_x) > 4094)
+			// 	printf("ARR:\t%d\n", TEXTURES_H * p->textr_y + p->textr_x);
 		// printf("Коодината:%d\t%d\n", y, wolf->player->end_draw);
-		wolf->graph->scr_pixels[x + y * wolf->scr_w] = color;//[y * wolf->scr_w - (wolf->scr_w - x)] = color; // записть ;нужного; текселя
+		wolf->graph->pixs[x + y * wolf->scr_w] = color;//[y * wolf->scr_w - (wolf->scr_w - x)] = color; // записть ;нужного; текселя
 	}
 }
 
@@ -93,5 +96,19 @@ int			i;
 			arr[x + y * wolf->scr_w] = wolf->textures[0][TEXTURES_W * y + x];
 		}
 	}
-	SDL_UpdateWindowSurface(wolf->graph->win);
+	//SDL_UpdateWindowSurface(wolf->graph->win);
+}
+
+void	update_screen(t_wolf *wolf)
+{
+	SDL_UpdateTexture(wolf->graph->texture, NULL, wolf->graph->pixs, wolf->scr_w * 4);
+	SDL_RenderCopy(wolf->graph->render, wolf->graph->texture, NULL, NULL);
+	SDL_RenderPresent(wolf->graph->render);
+}
+
+void	free_sdl(t_wolf *wolf)
+{
+	SDL_DestroyTexture(wolf->graph->texture);
+	SDL_DestroyRenderer(wolf->graph->render);
+	SDL_DestroyWindow(wolf->graph->win);
 }

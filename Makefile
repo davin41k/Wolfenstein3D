@@ -13,7 +13,7 @@ DIR_LIB		:=	libft/
 DIR_LIB_INC	:=	$(DIR_LIB)
 
 LIBFT		:=	$(DIR_LIB)libft.a
-MLX			:=	-L minilibx -lmlx -framework OpenGL -framework AppKit
+SDL			:=	-I ~/Library/Frameworks/SDL2.framework/Headers -F ~/Library/Frameworks -framework SDL2
 
 #-------------------------- Paths --------------------------------------------
 
@@ -43,7 +43,7 @@ $(DIR_OBJ):
 
 #-------------------------- Link Block ---------------------------------------
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(MLX)
+	@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(SDL)
 	@echo "Linking" [ $(NAME) ]
 
 #-------------------------- Compil Block -------------------------------------

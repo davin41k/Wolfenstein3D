@@ -94,6 +94,8 @@ int				is_number(char *str)
 	{
 		if (!ft_isdigit((*str)))
 			return (0);
+		if (ft_atoi(&(*str)) > 4)
+			return (0);
 		str++;
 	}
 	return (1);

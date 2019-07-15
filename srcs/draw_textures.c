@@ -24,16 +24,20 @@ int		get_textures_pix_count(void)
 
 int		get_texel(void *pixels, int idx) //get_color_pix
 {
-	char	*pix;
+	unsigned	char	*pix;
 	unsigned	int		red;
 	unsigned	int		green;
 	unsigned	int		blue;
 
-	pix = pixels;
+	pix = (unsigned char*)pixels;
+	// blue = pix[idx];
+	// green = pix[idx + 1] << 8;
+	// red = pix[idx + 2] << 16;
 	blue = pix[idx];
-	green = pix[idx + 1] << 8;
-	red = pix[idx + 2] << 16;
-	return (red | green | blue);
+	green = pix[idx + 1];
+	red = pix[idx + 2];
+	return ((red << (16)) | (green << (8)) | blue);
+	// return (red | green | blue);
 }
 
 void	load_texture(t_wolf *wolf, char	*text_path)
@@ -52,7 +56,7 @@ void	load_texture(t_wolf *wolf, char	*text_path)
 	if (img == NULL)
 		error_exit(LOAD_ERR);
 	while (++idx < count_pix)
-		pixels[idx] = get_texel(img->pixels, idx * 4);
+		pixels[idx] = get_texel(img->pixels, idx * 3);
 	wolf->textures[texture_numb++] = pixels;
 	SDL_FreeSurface(img); //lSDL
 
@@ -61,19 +65,15 @@ void	load_texture(t_wolf *wolf, char	*text_path)
 void	load_all_textures (t_wolf *wolf)
 {
 //	load_texture(wolf, "../bluestone/witcher.bmp");
-	load_texture(wolf, "./bluestone/colorstone.bmp");
-	load_texture(wolf, "./bluestone/bluestone.bmp");
-	load_texture(wolf, "./bluestone/eagle.bmp");
-	load_texture(wolf, "./bluestone/greystone.bmp");
-	load_texture(wolf, "./bluestone/mossy.bmp");
-	load_texture(wolf, "./bluestone/redbrick.bmp");
-	load_texture(wolf, "./bluestone/wood.bmp");
-	// load_texture(wolf, "../pic/0.png");
-	// load_texture(wolf, "../pic/1.png");
-	// load_texture(wolf, "../pic/2.png");
-	// load_texture(wolf, "../pic/3.png");
-	// load_texture(wolf, "../pic/4.png");
-	// load_texture(wolf,"../pic/5.png");
-	// load_texture(wolf, "../pic/6.png");
-	// load_texture(wolf, "../pic/7.png");
+	// load_texture(wolf, "./bluestone/red.bmp");
+	load_texture(wolf, "./textures/1.color.bmp");
+	load_texture(wolf, "./textures/2.blue.bmp");
+	load_texture(wolf, "./textures/3.eagle.bmp");
+	load_texture(wolf, "./textures/4.skull.bmp");
+	//load_texture(wolf, "./textures/mossy.bmp");
+	load_texture(wolf, "./textures/5.mithril.bmp");
+	load_texture(wolf, "./textures/6.redwall.bmp");
+	load_texture(wolf, "./textures/7.wood.bmp");
+	load_texture(wolf, "./textures/8.purple.bmp");
+	
 }

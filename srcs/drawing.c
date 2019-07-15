@@ -121,7 +121,17 @@ void		wall_drawing(t_wolf *wolf)
 void		texture_wall_drawing(t_wolf *wolf)
 {
 	//SDL_BlitSurface(wolf->graph->screen, NULL, wolf->graph->win, NULL);
-	SDL_UpdateWindowSurface(wolf->graph->win);
+	//SDL_UpdateWindowSurface(wolf->graph->win);
+	update_screen(wolf);
+	int		i, j;
+	i = -1;
+	int pix = -1;
+	while (++i < wolf->scr_h)
+	{
+		j = -1;
+		while (++j < wolf->scr_w)
+		wolf->graph->pixs[++pix] = 0;
+	}
 }
 //8
 double		get_fps(t_wolf *wolf)
@@ -165,6 +175,8 @@ int			interactive_elem(t_wolf *wolf)
 			do_move(wolf);
 		else if (g->event.key.keysym.sym == SDLK_LSHIFT)
 			wolf->player->move_acceler = (double)RUN;
+		else if (g->event.key.keysym.sym == SDLK_t)
+			change_text_pack(wolf);
 	}
 	else if (g->event.type == SDL_MOUSEMOTION)
 		mouse_rotation(wolf, g->event.button.x);
@@ -262,4 +274,12 @@ void		mouse_rotation(t_wolf *wolf, int x)
 		rotate_left(wolf);
 		old_x = x;
 	}
+}
+
+void		change_text_pack(t_wolf *wolf)
+{
+	if (wolf->text_pack == TEXT_PACK_ONE)
+		wolf->text_pack = TEXT_PACK_TWO;
+	else
+		wolf->text_pack = TEXT_PACK_ONE;
 }

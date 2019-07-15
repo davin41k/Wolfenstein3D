@@ -31,7 +31,8 @@ int		wolf_init(t_wolf *wolf, char *file_name)
 void	player_init(t_wolf *wolf, int x)
 {
 	plant_player(wolf);
-	printf("P_POS:\t%f\t%f\n", wolf->player->pos_x,  wolf->player->pos_y);
+	wolf->text_pack = TEXT_PACK_ONE;
+	//printf("P_POS:\t%f\t%f\n", wolf->player->pos_x,  wolf->player->pos_y);
 	//wolf->player->pos_x = 22; //22
 	//wolf->player->pos_y = 12; // 12
 	wolf->player->dir_x = -1;
@@ -103,26 +104,39 @@ void	sdl_init(t_wolf *wolf)
 		error_exit(MEM_ERR);
 	// graph->scr_pixels = (int)graph->screen->pixels;
 	graph->wall_text_preset = FLAT_TEXT;
+	graph->texture = SDL_CreateTexture(wolf->graph->render,
+	SDL_PIXELFORMAT_ARGB8888,
+	SDL_TEXTUREACCESS_STREAMING, wolf->scr_w, wolf->scr_h);
+	graph->pixs = ft_memalloc(sizeof(int) * (wolf->scr_h * wolf->scr_w));
 	// printf("%p | %p\n", graph->screen, graph->win);
 }
 void	sdl_texture_init(t_wolf *wolf)
 {
 	t_graph		*graph;
 
-	if ((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0))
+	if ((SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0))
 		error_exit(MEM_ERR);
 	graph = wolf->graph;
 	graph->win = SDL_CreateWindow("Wolf3D", 250,
 	250, wolf->scr_w, wolf->scr_h, SDL_WINDOW_SHOWN);
 	if (graph->win == NULL)
 		error_exit(MEM_ERR);
-	graph->win_surface = SDL_GetWindowSurface(graph->win);
-	// graph->screen = SDL_CreateRGBSurface(0, wolf->scr_w, wolf->scr_h, 32,
-	// 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
-	// if (graph->screen == NULL)
-	// 	error_exit(MEM_ERR);
-	graph->scr_pixels = (int*)graph->win_surface->pixels;
+	//graph->win_surface = SDL_GetWindowSurface(graph->win);
+	graph->render = SDL_CreateRenderer(graph->win, -1,
+	SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+	if (graph->render == NULL)
+		error_exit(MEM_ERR);
+	graph->screen = SDL_CreateRGBSurface(0, wolf->scr_w, wolf->scr_h, 32,
+	0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+	if (graph->screen == NULL)
+		error_exit(MEM_ERR);
+	// graph->scr_pixels = (int)graph->screen->pixels;
 	graph->wall_text_preset = SPRITE_TEXT;
-	printf("%p | %p\n", graph->win_surface, graph->scr_pixels);
+	graph->texture = SDL_CreateTexture(wolf->graph->render,
+	SDL_PIXELFORMAT_ARGB8888,
+	SDL_TEXTUREACCESS_STREAMING, wolf->scr_w, wolf->scr_h);
+	graph->pixs = ft_memalloc(sizeof(int) * (wolf->scr_h * wolf->scr_w));
+	// printf("%p | %p\n", graph->screen, graph->win);
 }
 

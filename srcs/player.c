@@ -45,7 +45,7 @@ void			plant_player(t_wolf *wolf)
 	empty_place = find_empty_place(wolf);
 	if (empty_place == NULL)
 		error_exit(MAP_ERR);
-	wolf->player->pos_x = empty_place[0];
-	wolf->player->pos_y = empty_place[1];
+	wolf->player->pos_x = empty_place[0] + 0.5;
+	wolf->player->pos_y = empty_place[1] + 0.5;
 	free(empty_place);
 }
