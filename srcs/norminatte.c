@@ -19,8 +19,7 @@ static	void	check_map_correct(t_wolf *wolf)
 
 	count_x = get_count_x(GET_NUM);
 	count_y = get_count_y(GET_NUM);
-	printf("%d, %d  \n",get_count_x(GET_NUM), get_count_y(GET_NUM));
-	if (count_x < 4 || count_y < 4 || count_x > 120 ||  count_y > 120)
+	if (count_x < 4 || count_y < 4 || count_x > 120 || count_y > 120)
 		error_exit(INCORRECT_MAP);
 }
 
@@ -89,7 +88,6 @@ int				check_line_correct(char *line)
 
 int				is_number(char *str)
 {
-	//int		i = ft_getnbr(str);
 	while (*str)
 	{
 		if (!ft_isdigit((*str)))

@@ -25,7 +25,9 @@ int		**read_map(t_wolf *wolf)
 	while (get_next_line(fd, &line))
 	{
 		map[++idx] = get_array_line(line);
+		free(line);
 	}
+	free(line);
 	return (map);
 }
 

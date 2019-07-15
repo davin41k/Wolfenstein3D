@@ -22,7 +22,7 @@ int		get_textures_pix_count(void)
 	return (text_height * text_width);
 }
 
-int		get_texel(void *pixels, int idx) //get_color_pix
+int		get_texel(void *pixels, int idx)
 {
 	unsigned	char	*pix;
 	unsigned	int		red;
@@ -30,17 +30,13 @@ int		get_texel(void *pixels, int idx) //get_color_pix
 	unsigned	int		blue;
 
 	pix = (unsigned char*)pixels;
-	// blue = pix[idx];
-	// green = pix[idx + 1] << 8;
-	// red = pix[idx + 2] << 16;
 	blue = pix[idx];
-	green = pix[idx + 1];
-	red = pix[idx + 2];
-	return ((red << (16)) | (green << (8)) | blue);
-	// return (red | green | blue);
+	green = pix[idx + 1] << 8;
+	red = pix[idx + 2] << 16;
+	return (red | green | blue);
 }
 
-void	load_texture(t_wolf *wolf, char	*text_path)
+void	load_texture(t_wolf *wolf, char *text_path)
 {
 	static	int		texture_numb;
 	SDL_Surface		*img;
@@ -50,30 +46,30 @@ void	load_texture(t_wolf *wolf, char	*text_path)
 
 	count_pix = get_textures_pix_count();
 	idx = -1;
-	if(!(pixels = (int*)ft_memalloc(sizeof(int) * count_pix)))
+	if (!(pixels = (int*)ft_memalloc(sizeof(int) * count_pix)))
 		error_exit(MEM_ERR);
 	img = SDL_LoadBMP(text_path);
 	if (img == NULL)
 		error_exit(LOAD_ERR);
 	while (++idx < count_pix)
 		pixels[idx] = get_texel(img->pixels, idx * 3);
+	if (texture_numb > 7)
+	{
+		error_exit(LOAD_ERR);
+		SDL_FreeSurface(img);
+	}
 	wolf->textures[texture_numb++] = pixels;
-	SDL_FreeSurface(img); //lSDL
-
+	SDL_FreeSurface(img);
 }
 
-void	load_all_textures (t_wolf *wolf)
+void	load_all_textures(t_wolf *wolf)
 {
-//	load_texture(wolf, "../bluestone/witcher.bmp");
-	// load_texture(wolf, "./bluestone/red.bmp");
 	load_texture(wolf, "./textures/1.color.bmp");
 	load_texture(wolf, "./textures/2.blue.bmp");
 	load_texture(wolf, "./textures/3.eagle.bmp");
 	load_texture(wolf, "./textures/4.skull.bmp");
-	//load_texture(wolf, "./textures/mossy.bmp");
 	load_texture(wolf, "./textures/5.mithril.bmp");
 	load_texture(wolf, "./textures/6.redwall.bmp");
 	load_texture(wolf, "./textures/7.wood.bmp");
 	load_texture(wolf, "./textures/8.purple.bmp");
-	
 }

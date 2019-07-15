@@ -17,18 +17,23 @@ SDL			:=	-I ~/Library/Frameworks/SDL2.framework/Headers -F ~/Library/Frameworks 
 
 #-------------------------- Paths --------------------------------------------
 
-DIR_DRAW	:=	$(DIR_SRC)draw/
+DIR_GNL	:=	./get_next_line/
 
 #-------------------------- Header files -------------------------------------
-COR_H		:=	$(DIR_INC)fractol.h
+COR_H		:=	$(DIR_INC)wolf.h $(DIR_GNL)get_next_line.h
 
 #-------------------------- Source files -------------------------------------
-COR_C		:=	#$(DIR_DRAW)burning_ship.c\#
-				$(DIR_SRC)main.c
+COR_C		:=	$(DIR_GNL)get_next_line.c\
+				$(DIR_SRC)main.c $(DIR_SRC)clean_function.c\
+				$(DIR_SRC)draw_textures.c $(DIR_SRC)draw_two.c\
+				$(DIR_SRC)drawing.c $(DIR_SRC)exits.c $(DIR_SRC)\
+				$(DIR_SRC)init_function.c $(DIR_SRC)map_reader.c\
+				$(DIR_SRC)norminatte.c $(DIR_SRC)norminatte_two.c\
+				$(DIR_SRC)player.c\
 
 #-------------------------- Init OBJ, INC ------------------------------------
 OBJ			:=	$(patsubst $(DIR_SRC)%,$(DIR_OBJ)%,\
-				$(COR_C:.$(CH_SRC)=.$(CH_OBJ)))
+				$(COR_C:.$(CH_SRC)=.$(CH_OBJ))) $(SDL)
 
 INC			:=	$(addprefix -I, $(DIR_LIB_INC) $(DIR_INC))
 

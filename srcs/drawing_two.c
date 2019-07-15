@@ -12,17 +12,13 @@
 
 #include "../includes/wolf.h"
 
-
-//	1
-void	calc_ray_texture_hit(t_wolf *wolf) // мб просто находит 1 Х и все
+void	calc_ray_texture_hit(t_wolf *wolf)
 {
 	t_player	*p;
-//	int			text_numb;
 
 	wolf->text_numb = wolf->map->map[wolf->map->map_x][wolf->map->map_y] - 1;
 	wolf->text_numb += wolf->text_pack;
 	p = wolf->player;
-
 	if (p->hit_side == 0)
 		p->hit_wallx = p->pos_y + p->pwall_dst * p->raydir_y;
 	else
@@ -33,15 +29,15 @@ void	calc_ray_texture_hit(t_wolf *wolf) // мб просто находит 1 Х
 		p->textr_x = TEXTURES_W - p->textr_x - 1;
 	else if (p->hit_side == 1 && p->raydir_y < 0)
 		p->textr_x = TEXTURES_W - p->textr_x - 1;
-	//printf("| WALLX:\t%d", p->hit_wallx);
 }
 
 void	set_line_pixels(t_wolf *wolf, int texture_numb, int x)
 {
 	int			color;
-	int			tmp; //d
+	int			tmp;
 	int			y;
 	t_player	*p;
+
 	p = wolf->player;
 	y = wolf->player->start_draw - 1;
 	while (++y < wolf->player->end_draw)
@@ -51,13 +47,11 @@ void	set_line_pixels(t_wolf *wolf, int texture_numb, int x)
 		if (texture_numb < 0)
 			color = 0;
 		else
-			color = wolf->textures[texture_numb][TEXTURES_H * p->textr_y + p->textr_x];
+			color = wolf->textures[texture_numb]
+			[TEXTURES_H * p->textr_y + p->textr_x];
 		if (p->hit_side == 1)
 			color /= 2;
-			// if ((TEXTURES_H * p->textr_y + p->textr_x) > 4094)
-			// 	printf("ARR:\t%d\n", TEXTURES_H * p->textr_y + p->textr_x);
-		// printf("Коодината:%d\t%d\n", y, wolf->player->end_draw);
-		wolf->graph->pixs[x + y * wolf->scr_w] = color;//[y * wolf->scr_w - (wolf->scr_w - x)] = color; // записть ;нужного; текселя
+		wolf->graph->pixs[x + y * wolf->scr_w] = color;
 	}
 }
 
@@ -65,6 +59,7 @@ void	clean_buff_screen(t_wolf *wolf)
 {
 	int		idx;
 	int		y_count;
+
 	idx = -1;
 	y_count = -1;
 	while (++y_count < wolf->scr_w)
@@ -77,31 +72,10 @@ void	clean_buff_screen(t_wolf *wolf)
 	}
 }
 
-void	show_picture(t_wolf *wolf)
-{
-	int		x;
-	int		y;
-	int		last_pix;
-	int		*arr;
-int			i;
-	i = x = y = -1;
-	last_pix = TEXTURES_W * TEXTURES_H;
-	arr =  wolf->graph->scr_pixels;
-	while (++y < 64)
-	{
-		x = -1;
-		while (++x < 64)
-		{
-			i++;
-			arr[x + y * wolf->scr_w] = wolf->textures[0][TEXTURES_W * y + x];
-		}
-	}
-	//SDL_UpdateWindowSurface(wolf->graph->win);
-}
-
 void	update_screen(t_wolf *wolf)
 {
-	SDL_UpdateTexture(wolf->graph->texture, NULL, wolf->graph->pixs, wolf->scr_w * 4);
+	SDL_UpdateTexture(wolf->graph->texture, NULL,
+	wolf->graph->pixs, wolf->scr_w * 4);
 	SDL_RenderCopy(wolf->graph->render, wolf->graph->texture, NULL, NULL);
 	SDL_RenderPresent(wolf->graph->render);
 }
