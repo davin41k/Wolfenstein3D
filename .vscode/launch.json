@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "a.out",
+            "name": "wolf3d",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/a.out",
-            "args": ["map"],
+            "args": ["map/"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

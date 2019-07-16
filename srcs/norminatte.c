@@ -36,16 +36,16 @@ int				check_norme(t_wolf *wolf)
 	{
 		if (ret < 0)
 			error_exit(MEM_ERR);
-		if (ret < 7)
+		if (*line <= 32)
 			error_exit(MAP_ERR);
 		get_count_y(INCREASE);
 		if (first_line == -1)
 			first_line = count_x(line);
 		if (!norme_norminatte(first_line, line, fd))
 			return (0);
-		free(line);
+		ft_strdel(&line);
 	}
-	free(line);
+	ft_strdel(&line);
 	get_count_x(first_line);
 	check_map_correct();
 	close(fd);
@@ -74,6 +74,8 @@ int				check_line_correct(char *line)
 	char	**splitted;
 	int		idx;
 
+	if (line == NULL)
+		return (0);
 	splitted = ft_strsplit(line, ' ');
 	idx = -1;
 	while (splitted[++idx])

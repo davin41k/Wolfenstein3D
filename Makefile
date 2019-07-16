@@ -1,6 +1,6 @@
 #-------------------------- Key Values ---------------------------------------
 NAME		:=	wolf3d
-CFLAGS		:=	-Wall -Werror -Wextra
+CFLAGS		:=	-Wall -Werror -Wextra -g
 CC			:=	gcc
 
 DIR_INC		:=	includes/
@@ -50,7 +50,7 @@ INC			:=	$(addprefix -I, $(DIR_LIB_INC) $(DIR_INC) $(DIR_SDL_INC))
 all: lib $(DIR_OBJ) $(NAME)
 
 lib:
-	@make -C $(DIR_LIB)
+	@make -C $(DIR_LIB) > /dev/null
 
 $(DIR_OBJ):
 	@mkdir -p $(DIR_OBJ)

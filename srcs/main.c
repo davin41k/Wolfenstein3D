@@ -34,8 +34,17 @@ int				check_map_format(char *file_name)
 {
 	char	**split;
 	int		idx;
+	int		fd;
+	char	*tmp;
 
+	tmp = NULL;
 	idx = 0;
+	split = NULL;
+	fd = open(file_name, O_RDONLY);
+	if (read(fd, tmp, 0) == -1)
+		error_exit(FORMAT_ERR);
+	close(fd);
+	ft_strdel(&tmp);
 	split = ft_strsplit(file_name, '.');
 	while (split[idx])
 		idx++;
@@ -44,7 +53,8 @@ int				check_map_format(char *file_name)
 		clean_text(split);
 		error_exit(FORMAT_ERR);
 	}
-	clean_text(split);
+	else
+		clean_text(split);
 	return (1);
 }
 
