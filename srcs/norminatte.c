@@ -35,7 +35,9 @@ int				check_norme(t_wolf *wolf)
 	while ((ret = get_next_line(fd, &line)))
 	{
 		if (ret < 0)
-			error_exit(2);
+			error_exit(MEM_ERR);
+		if (ret < 7)
+			error_exit(MAP_ERR);
 		get_count_y(INCREASE);
 		if (first_line == -1)
 			first_line = count_x(line);

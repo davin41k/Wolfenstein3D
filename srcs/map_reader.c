@@ -112,6 +112,6 @@ void	edges_check(t_wolf *wolf)
 			map[i][0] = 1;
 	i = -1;
 	while (++i < endy)
-		if (map[i][endy - 1] == 0)
-			map[i][endy - 1] = 1;
+		if (map[i][endx - 1] == 0)
+			map[i][endx - 1] = 1;
 }
