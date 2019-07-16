@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   wolf.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshereme <dshereme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef WOLF_H
 
-#ifndef FRACTOL_H
-
-# define FRACTOL_H
+# define WOLF_H
 
 # define WIN_FHD_HEIGHT 1080
 # define WIN_FHD_WIDTH	1080
@@ -36,6 +35,7 @@
 # define MAP_ERR		3
 # define INCORRECT_MAP	4
 # define LOAD_ERR		5
+# define FORMAT_ERR		6
 
 # define PALETTE_ONE	0
 # define PALETTE_TWO	1
@@ -55,8 +55,9 @@
 # define RUN			10
 # define EASY_ROTATE	1
 # define FAST_ROTATE	3
-
-
+# define RESP_SHIFT		0.4
+# define MAP_FORMAT		"wolf"
+# define WALL_STOPPER	0.12
 
 # include <mlx.h>
 # include <math.h>
@@ -65,8 +66,8 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "../libft/libft.h"
-# include "../get_next_line/get_next_line.h"
+# include "libft.h"
+# include "get_next_line.h"
 # include <unistd.h>
 # include <pthread.h>
 # include "SDL.h"
@@ -113,7 +114,7 @@ typedef	struct		s_player
 	int				end_draw;
 	int				textr_x;
 	int				textr_y;
-	double			hit_wallx; //int
+	double			hit_wallx;
 }					t_player;
 
 typedef	struct		s_map
@@ -130,7 +131,7 @@ typedef	struct		s_color
 	int				red;
 	int				green;
 	int				blue;
-	int				color;		// :)
+	int				color;
 }					t_color;
 
 typedef	struct		s_wolf
@@ -147,77 +148,63 @@ typedef	struct		s_wolf
 	t_color			*color;
 }					t_wolf;
 
-	//	***EXITS***
-int		escape_exit(int key, t_wolf *wolf);
-int		red_exit(int key, t_wolf *wolf);
-void	read_error(void);
-void	error_exit(int errno);
+int					check_map_format(char *file_name);
 
-	//	***CLEAN FUNCTIONS***
-void	clean_text(char **splitted);
+int					escape_exit(int key, t_wolf *wolf);
+int					red_exit(int key, t_wolf *wolf);
+void				read_error(void);
+void				error_exit(int errno);
 
-	//	***NORMINATTE***
+void				clean_text(char **splitted);
 
-int		norme_norminatte(int first_line, char *line, int fd);
-int		check_norme(t_wolf *wolf);
-int		check_line_correct(char *line);
-int		is_number(char *str);
+int					norme_norminatte(int first_line, char *line, int fd);
+int					check_norme(t_wolf *wolf);
+int					check_line_correct(char *line);
+int					is_number(char *str);
 
-	//	***NORMINETTE_TWO***
-int		count_x(char *line);
-int		get_count_x(int x);
-int		get_count_y(int y);
+int					count_x(char *line);
+int					get_count_x(int x);
+int					get_count_y(int y);
 
-	//	***MAP_READER***
-int     **init_map_array(void);
-int		*get_array_line(char *line);
-void	print_map(t_wolf *wolf);
-int		**read_map(t_wolf *wolf);
-void	edges_check(t_wolf *wolf);
+int					**init_map_array(void);
+int					*get_array_line(char *line);
+void				print_map(t_wolf *wolf);
+int					**read_map(t_wolf *wolf);
+void				edges_check(t_wolf *wolf);
 
-	//	***INIT_FUNCTION***
-int		wolf_init(t_wolf *wolf, char *file_name);
-void	player_init(t_wolf *wolf, int x);
-void	sdl_init(t_wolf *wolf);
-void	sycle_init(t_wolf *wolf, int x);
-void	textures_array_init(t_wolf *wolf);
-void	sdl_texture_init(t_wolf *wolf);
+int					wolf_init(t_wolf *wolf, char *file_name);
+void				player_init(t_wolf *wolf);
+void				sdl_init(t_wolf *wolf);
+void				sycle_init(t_wolf *wolf, int x);
+void				textures_array_init(t_wolf *wolf);
+void				sdl_texture_init(t_wolf *wolf);
 
-	//	***DRAWING***
-void	do_step(t_wolf *wolf);
-void	do_dda(t_wolf *wolf);
-void	calc_cam_distance(t_wolf *wolf);
-void	calc_line_height(t_wolf *wolf);
-void	get_wall_color(t_wolf *wolf);
-void	wall_drawing(t_wolf *wolf);
-double	get_fps(t_wolf *wolf);
-int		interactive_elem(t_wolf *wolf);
-void	do_move(t_wolf *wolf);
-void	rotate_right(t_wolf *wolf);
-void	rotate_left(t_wolf *wolf);
-void	set_move_speed(t_wolf *wolf, double fps);
-void	move_forward(t_wolf *wolf);
-void	move_back(t_wolf *wolf);
-void	mouse_rotation(t_wolf *wolf, int x);
-void	texture_wall_drawing(t_wolf *wolf);
-void	change_text_pack(t_wolf *wolf);
+void				do_step(t_wolf *wolf);
+void				do_dda(t_wolf *wolf);
+void				calc_cam_distance(t_wolf *wolf);
+void				calc_line_height(t_wolf *wolf);
+void				get_wall_color(t_wolf *wolf);
+void				wall_drawing(t_wolf *wolf);
+double				get_fps(void);
+int					interactive_elem(t_wolf *wolf);
+void				do_move(t_wolf *wolf);
+void				rotate_right(t_wolf *wolf);
+void				rotate_left(t_wolf *wolf);
+void				set_move_speed(t_wolf *wolf);
+void				move_forward(t_wolf *wolf);
+void				move_back(t_wolf *wolf);
+void				mouse_rotation(t_wolf *wolf, int x);
+void				texture_wall_drawing(t_wolf *wolf);
+void				change_text_pack(t_wolf *wolf);
 
-	//	***DRAWING_TWO***
-void	calc_ray_texture_hit(t_wolf *wolf);
-void	set_line_pixels(t_wolf *wolf, int texture_numb, int x);
-void	clean_buff_screen(t_wolf *wolf);
-void	update_screen(t_wolf *wolf);
+void				calc_ray_texture_hit(t_wolf *wolf);
+void				set_line_pixels(t_wolf *wolf, int texture_numb, int x);
+void				clean_buff_screen(t_wolf *wolf);
+void				update_screen(t_wolf *wolf);
 
-	//	***DRAW_TEXTURES***
-void	load_all_textures (t_wolf *wolf);
-
-// ***MAIN***
-void	do_work(t_wolf *wolf);
-
-//	***PLAYER***
-void	plant_player(t_wolf *wolf);
-
-
-void	show_picture(t_wolf *wolf);
+void				load_all_textures (t_wolf *wolf);
+void				do_work(t_wolf *wolf);
+void				plant_player(t_wolf *wolf);
+void				show_picture(t_wolf *wolf);
 
 #endif

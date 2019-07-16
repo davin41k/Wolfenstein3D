@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 int		wolf_init(t_wolf *wolf, char *file_name)
 {
@@ -28,7 +28,7 @@ int		wolf_init(t_wolf *wolf, char *file_name)
 	return (1);
 }
 
-void	player_init(t_wolf *wolf, int x)
+void	player_init(t_wolf *wolf)
 {
 	plant_player(wolf);
 	wolf->text_pack = TEXT_PACK_ONE;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 int		get_textures_pix_count(void)
 {

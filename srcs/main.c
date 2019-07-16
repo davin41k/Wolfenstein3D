@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 int				main(int ac, char **av)
 {
 	t_wolf		wolf;
-	t_map		map;
 
-	wolf_init(&wolf, av[1]);
 	if (ac != 2)
 		error_exit(USAGE);
+	check_map_format(av[1]);
+	wolf_init(&wolf, av[1]);
 	sdl_texture_init(&wolf);
 	if (!check_norme(&wolf))
 		error_exit(MAP_ERR);
@@ -28,6 +28,24 @@ int				main(int ac, char **av)
 	load_all_textures(&wolf);
 	do_work(&wolf);
 	return (0);
+}
+
+int				check_map_format(char *file_name)
+{
+	char	**split;
+	int		idx;
+
+	idx = 0;
+	split = ft_strsplit(file_name, '.');
+	while (split[idx])
+		idx++;
+	if (!ft_strequ(split[--idx], MAP_FORMAT))
+	{
+		clean_text(split);
+		error_exit(FORMAT_ERR);
+	}
+	clean_text(split);
+	return (1);
 }
 
 static	void	wall_calculation(t_wolf *wolf, int x)
@@ -55,7 +73,7 @@ void			do_work(t_wolf *wolf)
 	int		x;
 
 	is_running = 1;
-	player_init(wolf, x);
+	player_init(wolf);
 	while (is_running)
 	{
 		x = -1;
@@ -68,7 +86,7 @@ void			do_work(t_wolf *wolf)
 			else
 				wall_text_calculation(wolf, x);
 		}
-		set_move_speed(wolf, x);
+		set_move_speed(wolf);
 		if (interactive_elem(wolf) == -1)
 		{
 			is_running = 0;

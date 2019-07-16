@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 void	clean_text(char **splitted)
 {

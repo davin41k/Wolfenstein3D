@@ -89,6 +89,8 @@ SRC		:=	ft_strlen.c\
 			ft_lstcount.c\
 			ft_lstgetlast.c\
 			ft_getnbr.c\
+			\
+			get_next_line.c
 
 OBJ		:= $(SRC:.c=.o)	
 

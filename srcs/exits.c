@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 int		escape_exit(int key, t_wolf *wolf)
 {
@@ -40,7 +40,7 @@ void	error_exit(int errno)
 {
 	if (errno == USAGE)
 	{
-		ft_putendl("usage:    ./wolf3d a_map_file:");
+		ft_putendl("usage:    ./wolf3d a_map_file.wolf:");
 		ft_putendl("map dimension: min[4x4], max[120x120]");
 		ft_putendl("textures range between [0, 4]");
 		ft_putendl("[w, a, s, d] - move, left shift - acceleration");
@@ -56,5 +56,7 @@ void	error_exit(int errno)
 		ft_putendl("error: map is too big or too small");
 	else if (errno == LOAD_ERR)
 		ft_putendl("error: textures was not load");
+	else if (errno == FORMAT_ERR)
+		ft_putendl("error: map have different format");
 	exit(0);
 }

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
-static	void	check_map_correct(t_wolf *wolf)
+static	void	check_map_correct(void)
 {
 	int		count_x;
 	int		count_y;
@@ -45,7 +45,7 @@ int				check_norme(t_wolf *wolf)
 	}
 	free(line);
 	get_count_x(first_line);
-	check_map_correct(wolf);
+	check_map_correct();
 	close(fd);
 	return (1);
 }

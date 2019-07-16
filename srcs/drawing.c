@@ -10,27 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 void		move_forward(t_wolf *wolf)
 {
 	if (wolf->map->map[(int)(wolf->player->pos_x + wolf->player->dir_x *
-		wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
+		wolf->player->move_sp + WALL_STOPPER)]
+		[(int)(wolf->player->pos_y)] == 0 &&
+		!(wolf->map->map[(int)(wolf->player->pos_x + wolf->player->dir_x *
+		wolf->player->move_sp - WALL_STOPPER)]
+		[(int)(wolf->player->pos_y)]))
 		wolf->player->pos_x += wolf->player->dir_x * wolf->player->move_sp;
 	if (wolf->map->map[(int)(wolf->player->pos_x)]
 	[(int)(wolf->player->pos_y + wolf->player->dir_y *
-	wolf->player->move_sp)] == 0)
+	wolf->player->move_sp + WALL_STOPPER)] == 0 &&
+	!(wolf->map->map[(int)(wolf->player->pos_x)]
+	[(int)(wolf->player->pos_y + wolf->player->dir_y *
+	wolf->player->move_sp - WALL_STOPPER)]))
 		wolf->player->pos_y += wolf->player->dir_y * wolf->player->move_sp;
 }
 
 void		move_back(t_wolf *wolf)
 {
 	if (wolf->map->map[(int)(wolf->player->pos_x - wolf->player->dir_x *
-		wolf->player->move_sp)][(int)(wolf->player->pos_y)] == 0)
+		wolf->player->move_sp + WALL_STOPPER)]
+		[(int)(wolf->player->pos_y)] == 0 &&
+		(wolf->map->map[(int)(wolf->player->pos_x - wolf->player->dir_x *
+		wolf->player->move_sp - WALL_STOPPER)]
+		[(int)(wolf->player->pos_y)]) == 0)
 		wolf->player->pos_x -= wolf->player->dir_x * wolf->player->move_sp;
 	if (wolf->map->map[(int)(wolf->player->pos_x)]
 	[(int)(wolf->player->pos_y - wolf->player->dir_y *
-	wolf->player->move_sp)] == 0)
+	wolf->player->move_sp + WALL_STOPPER)] == 0 &&
+	(wolf->map->map[(int)(wolf->player->pos_x)]
+	[(int)(wolf->player->pos_y - wolf->player->dir_y *
+	wolf->player->move_sp - WALL_STOPPER)]) == 0)
 		wolf->player->pos_y -= wolf->player->dir_y *
 		wolf->player->move_sp;
 }

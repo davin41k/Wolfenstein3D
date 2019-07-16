@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 void		texture_wall_drawing(t_wolf *wolf)
 {
@@ -29,7 +29,7 @@ void		texture_wall_drawing(t_wolf *wolf)
 	}
 }
 
-double		get_fps(t_wolf *wolf)
+double		get_fps(void)
 {
 	double			time;
 	static	double	old_time;
@@ -41,11 +41,11 @@ double		get_fps(t_wolf *wolf)
 	return (frame_time);
 }
 
-void		set_move_speed(t_wolf *wolf, double fps)
+void		set_move_speed(t_wolf *wolf)
 {
 	double		frame_time;
 
-	frame_time = get_fps(wolf);
+	frame_time = get_fps();
 	if (wolf->graph->wall_text_preset == FLAT_TEXT)
 		wall_drawing(wolf);
 	else
@@ -65,11 +65,8 @@ int			interactive_elem(t_wolf *wolf)
 		return (-1);
 	else if (g->event.type == SDL_KEYDOWN)
 	{
-		if (g->event.key.keysym.sym == SDLK_w || g->event.key.keysym.sym ==
-		SDLK_s || g->event.key.keysym.sym == SDLK_a ||
-		g->event.key.keysym.sym == SDLK_d)
-			do_move(wolf);
-		else if (g->event.key.keysym.sym == SDLK_LSHIFT)
+		do_move(wolf);
+		if (g->event.key.keysym.sym == SDLK_LSHIFT)
 			wolf->player->move_acceler = (double)RUN;
 		else if (g->event.key.keysym.sym == SDLK_t)
 			change_text_pack(wolf);
@@ -84,12 +81,16 @@ int			interactive_elem(t_wolf *wolf)
 
 void		do_move(t_wolf *wolf)
 {
-	if (wolf->graph->event.key.keysym.sym == SDLK_w)
+	if (wolf->graph->event.key.keysym.sym == SDLK_w ||
+	wolf->graph->event.key.keysym.sym == SDLK_UP)
 		move_forward(wolf);
-	if (wolf->graph->event.key.keysym.sym == SDLK_s)
+	if (wolf->graph->event.key.keysym.sym == SDLK_s ||
+	wolf->graph->event.key.keysym.sym == SDLK_DOWN)
 		move_back(wolf);
-	if (wolf->graph->event.key.keysym.sym == SDLK_d)
+	if (wolf->graph->event.key.keysym.sym == SDLK_d ||
+	wolf->graph->event.key.keysym.sym == SDLK_RIGHT)
 		rotate_right(wolf);
-	if (wolf->graph->event.key.keysym.sym == SDLK_a)
+	if (wolf->graph->event.key.keysym.sym == SDLK_a ||
+	wolf->graph->event.key.keysym.sym == SDLK_LEFT)
 		rotate_left(wolf);
 }

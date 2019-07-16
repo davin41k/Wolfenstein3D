@@ -4,6 +4,7 @@
         "pthread.h": "c",
         "chrono": "c",
         "__locale": "c",
-        "sdl.h": "c"
+        "sdl.h": "c",
+        "get_next_line.h": "c"
     }
 }

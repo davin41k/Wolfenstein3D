@@ -12,30 +12,39 @@ CH_OBJ		:=	o
 DIR_LIB		:=	libft/
 DIR_LIB_INC	:=	$(DIR_LIB)
 
+DIR_SDL_INC	:=	./frameworks/SDL2.framework/Headers/
+
 LIBFT		:=	$(DIR_LIB)libft.a
-SDL			:=	-I ~/Library/Frameworks/SDL2.framework/Headers -F ~/Library/Frameworks -framework SDL2
+SDL			:=	-F ./frameworks/ -framework SDL2
 
 #-------------------------- Paths --------------------------------------------
 
-DIR_GNL	:=	./get_next_line/
+
 
 #-------------------------- Header files -------------------------------------
-COR_H		:=	$(DIR_INC)wolf.h $(DIR_GNL)get_next_line.h
+COR_H		:=	$(DIR_INC)wolf.h
 
 #-------------------------- Source files -------------------------------------
-COR_C		:=	$(DIR_GNL)get_next_line.c\
-				$(DIR_SRC)main.c $(DIR_SRC)clean_function.c\
-				$(DIR_SRC)draw_textures.c $(DIR_SRC)draw_two.c\
-				$(DIR_SRC)drawing.c $(DIR_SRC)exits.c $(DIR_SRC)\
-				$(DIR_SRC)init_function.c $(DIR_SRC)map_reader.c\
-				$(DIR_SRC)norminatte.c $(DIR_SRC)norminatte_two.c\
+COR_C		:=	$(DIR_SRC)main.c\
+				$(DIR_SRC)clean_functions.c\
+				$(DIR_SRC)draw_textures.c\
+				$(DIR_SRC)drawing_two.c\
+				$(DIR_SRC)drawing.c\
+				$(DIR_SRC)drawing_three.c\
+				$(DIR_SRC)drawing_four.c\
+				$(DIR_SRC)drawing_five.c\
+				$(DIR_SRC)exits.c\
+				$(DIR_SRC)init_function.c\
+				$(DIR_SRC)map_reader.c\
+				$(DIR_SRC)norminatte.c\
+				$(DIR_SRC)norminette_two.c\
 				$(DIR_SRC)player.c\
 
 #-------------------------- Init OBJ, INC ------------------------------------
 OBJ			:=	$(patsubst $(DIR_SRC)%,$(DIR_OBJ)%,\
-				$(COR_C:.$(CH_SRC)=.$(CH_OBJ))) $(SDL)
+				$(COR_C:.$(CH_SRC)=.$(CH_OBJ)))
 
-INC			:=	$(addprefix -I, $(DIR_LIB_INC) $(DIR_INC))
+INC			:=	$(addprefix -I, $(DIR_LIB_INC) $(DIR_INC) $(DIR_SDL_INC))
 
 #-------------------------- Make ---------------------------------------------
 all: lib $(DIR_OBJ) $(NAME)
@@ -48,7 +57,7 @@ $(DIR_OBJ):
 
 #-------------------------- Link Block ---------------------------------------
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) -o $(NAME) $(OBJ) $(LIBFT) $(SDL)
+	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(LIBFT)
 	@echo "Linking" [ $(NAME) ]
 
 #-------------------------- Compil Block -------------------------------------

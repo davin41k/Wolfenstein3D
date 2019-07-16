@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/wolf.h"
+#include "wolf.h"
 
 static	int		*find_empty_place(t_wolf *wolf)
 {
@@ -29,8 +29,8 @@ static	int		*find_empty_place(t_wolf *wolf)
 		{
 			if (map[i][j] == 0)
 			{
-				empty_place[0] = i;
-				empty_place[i] = j;
+				empty_place[0] = j;
+				empty_place[1] = i;
 				return (empty_place);
 			}
 		}
@@ -45,7 +45,7 @@ void			plant_player(t_wolf *wolf)
 	empty_place = find_empty_place(wolf);
 	if (empty_place == NULL)
 		error_exit(MAP_ERR);
-	wolf->player->pos_x = empty_place[0] + 0.5;
-	wolf->player->pos_y = empty_place[1] + 0.5;
+	wolf->player->pos_x = empty_place[1] + RESP_SHIFT;
+	wolf->player->pos_y = empty_place[0] + RESP_SHIFT;
 	free(empty_place);
 }
