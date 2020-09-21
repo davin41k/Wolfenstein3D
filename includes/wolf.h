@@ -59,7 +59,6 @@
 # define MAP_FORMAT		"wolf"
 # define WALL_STOPPER	0.12
 
-# include <mlx.h>
 # include <math.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -70,7 +69,7 @@
 # include "get_next_line.h"
 # include <unistd.h>
 # include <pthread.h>
-# include "SDL.h"
+# include "SDL2/SDL.h"
 
 typedef	struct		s_graphics
 {

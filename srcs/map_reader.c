@@ -52,12 +52,8 @@ int		*get_array_line(char *line)
 int		**init_map_array(void)
 {
 	int		**map;
-	int		idx;
-	int		line_len;
 	int		array_len;
 
-	idx = -1;
-	line_len = get_count_x(GET_NUM);
 	array_len = get_count_y(GET_NUM);
 	if (!(map = (int**)ft_memalloc(sizeof(int*) * (array_len + 1))))
 		error_exit(MEM_ERR);

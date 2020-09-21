@@ -50,14 +50,12 @@ void	show_picture(t_wolf *wolf)
 {
 	int		x;
 	int		y;
-	int		last_pix;
 	int		*arr;
 	int		i;
 
 	i = -1;
 	x = -1;
 	y = -1;
-	last_pix = TEXTURES_W * TEXTURES_H;
 	arr = wolf->graph->scr_pixels;
 	while (++y < 64)
 	{
